@@ -21,3 +21,4 @@ phpunit.xml.dist export-ignore
 
 # misc
 TODO export-ignore
+CHANGELOG.md export-ignore
