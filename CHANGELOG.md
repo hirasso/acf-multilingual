@@ -1,5 +1,30 @@
 # Changelog
 
+## 3.0.0
+
+### Major Changes
+
+- 0f1d04e: - **BREAKING** Renamed the plugin from `hirasso/rh-acf-multilingual` to `hirasso/acf-multilingual`
+  - **BREAKING** The root namespace was changed from `ACFML` to `Hirasso\ACFML`
+
+  If you have this plugin installed via composer, update your composer.json:
+
+  ```diff
+  {
+  -  "hirasso/rh-acf-multilingual": "^2.0",
+  +  "hirasso/acf-multilingual": "^3.0",
+  }
+  ```
+
+### Minor Changes
+
+- 653979e: Add a `GitHub Plugin URI` so that the plugin can be updated via [Git Updater](https://github.com/afragen/git-updater)
+
+### Patch Changes
+
+- 52be3e6: Add types and type checking
+- 0f1d04e: Update the README so that it reflects the actual functionality :)
+
 ## 2.0.2
 
 ### Patch Changes
