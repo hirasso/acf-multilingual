@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.1
+
+### Patch Changes
+
+- 36833e7: Fix injecting previous monolingual values after making an existing field multilingual: Actually check if the field already contains a translated value before assuming that it should be overridden.
+
 ## 3.0.0
 
 ### Major Changes
