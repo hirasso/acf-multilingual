@@ -21,6 +21,30 @@ Does NOT integrate with plugins that add additional fields to the WordPress Admi
 
 # Usage
 
+## Installation
+
+### Via Composer (recommended):
+
+1. Install the plugin:
+
+```shell
+composer require hirasso/acf-multilingual
+```
+
+1. Activate the plugin manually or using WP CLI:
+
+```shell
+wp plugin activate acf-multilingual
+```
+
+### Manually:
+
+1. Download and extract the plugin from the latest release
+2. Copy the `acf-multilingual` folder into your `wp-content/plugins` folder
+3. Activate the plugin via the plugins admin page – Done!
+4. Handle updates via [afragen/git-updater](https://github.com/afragen/git-updater)
+
+
 ## Setup
 
 Add as many languages as you like. The languages will be injected into the URL, like this:
