@@ -13,6 +13,7 @@
     "build": "npm run bundle -- --production",
     "format:assets": "npx prettier --write 'assets-src/*.{js,scss}'",
     "format:php": "./vendor/bin/pint",
+    "check:js": "pnpx tsc --noEmit --project ./jsconfig.json",
     "version": "pnpm changeset version && bin/cli.js version:patch",
     "install-wp-tests": "echo https://make.wordpress.org/cli/handbook/misc/plugin-unit-tests/#3-initialize-the-testing-environment-locally",
     "test:prepare": "composer install && bash bin/install-wp-tests.sh wordpress_test root 'root' localhost latest",
@@ -35,22 +36,11 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "^7.23.9",
-    "@babel/preset-env": "^7.23.9",
     "@changesets/cli": "^2.29.7",
-    "autoprefixer": "^9.8.8",
-    "browser-sync": "^2.29.3",
-    "cssnano": "^4.1.11",
+    "@types/jquery": "^3.5.33",
     "fast-glob": "^3.3.3",
-    "glob": "^7.2.3",
-    "minimist": "^1.2.8",
-    "parcel-bundler": "^1.12.5",
     "picocolors": "^1.1.1",
-    "postcss-dir-pseudo-class": "^5.0.0",
-    "postcss-logical": "^4.0.2",
     "prettier": "^3.6.2",
-    "rimraf": "^3.0.2",
-    "sass": "^1.70.0",
     "wp-pot": "^1.10.2"
   }
 }

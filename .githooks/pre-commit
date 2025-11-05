@@ -4,4 +4,5 @@ if [ -n "$CI" ]; then
   exit 0
 fi
 
-npm run format:php
+pnpm run check:js
+pnpm run format:php
