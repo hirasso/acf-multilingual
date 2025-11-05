@@ -2,7 +2,7 @@
   "name": "acf-multilingual",
   "author": "Rasso Hilber",
   "license": "GPL-2.0-or-later",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "private": true,
   "main": "index.js",
   "type": "module",
