@@ -16,12 +16,12 @@
   > .acf-input
   > .acf-fields
   > .acfml-field:not(.acfml-is-visible) {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: -10000px;
-    visibility: hidden;
-    pointer-events: none;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: -10000px;
+  visibility: hidden;
+  pointer-events: none;
 }
 [data-acfml-ui-style="columns"] > .acf-input > .acf-fields {
   display: grid;
@@ -199,11 +199,3 @@
 .acfml-admin-notice > *:last-child {
   margin-bottom: 0.8em;
 }
-
-/*
-* Admin Bar
-*/
-// .ab-icon.acfml:before {
-//   content: "\f182";
-//   top: 1px;
-// }
