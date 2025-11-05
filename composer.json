@@ -1,6 +1,6 @@
 {
   "name": "hirasso/acf-multilingual",
-  "description": "Multilingual Support for WordPress with Advanced Custom Fields",
+  "description": "An experimental plugin for building multilingual websites using WordPress and Advanced Custom Fields",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
   "authors": [
