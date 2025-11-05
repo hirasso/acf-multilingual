@@ -9,6 +9,7 @@
  * Text Domain: acfml
  * Requires PHP: 8.2
  * Domain Path: /lang
+ * GitHub Plugin URI: hirasso/acf-multilingual
 **/
 
 if (!\defined('ABSPATH')) {

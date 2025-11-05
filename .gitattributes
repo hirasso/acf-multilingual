@@ -1,0 +1,23 @@
+# dotfiles
+.* export-ignore
+
+# js tooling
+package.json export-ignore
+package-lock.json export-ignore
+pnpm-lock.yaml export-ignore
+jsconfig.json export-ignore
+.nvmrc export-ignore
+
+# php tooling
+composer.lock export-ignore
+composer.json export-ignore
+phpstan.neon export-ignore
+pint.json export-ignore
+
+# tests and CI
+/bin export-ignore
+/tests export-ignore
+phpunit.xml.dist export-ignore
+
+# misc
+TODO export-ignore
