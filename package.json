@@ -1,5 +1,5 @@
 {
-  "name": "rh-acf-multilingual",
+  "name": "acf-multilingual",
   "author": "Rasso Hilber",
   "license": "ISC",
   "version": "2.0.2",
@@ -8,7 +8,6 @@
   "type": "module",
   "scripts": {
     "preinstall": "npx only-allow pnpm && git config core.hooksPath .githooks",
-    "bundle": "node parcel-bundler.js -f \"assets-src/*.js\" -o \"assets\"",
     "generate-pot": "node ./lang/generate-pot.js",
     "watch": "npm run bundle -- --url https://acf-multilingual.test --sync",
     "build": "npm run bundle -- --production",

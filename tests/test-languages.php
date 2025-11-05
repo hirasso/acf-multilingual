@@ -6,8 +6,8 @@
  * @package ACFMultilingual
  */
 
-use ACFML\ACFMultilingual;
-use ACFML\Config;
+use Hirasso\ACFML\ACFMultilingual;
+use Hirasso\ACFML\Config;
 
 /**
  * Tests add_lannguage

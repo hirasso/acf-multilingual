@@ -1,6 +1,6 @@
 <?php
 
-namespace ACFML;
+namespace Hirasso\ACFML;
 
 if (! \defined('ABSPATH')) {
     exit;

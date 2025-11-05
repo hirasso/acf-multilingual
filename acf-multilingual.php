@@ -15,16 +15,28 @@ if (!\defined('ABSPATH')) {
     exit;
 } // Exit if accessed directly
 
-use ACFML\ACFMultilingual;
-use ACFML\Config;
+use Hirasso\ACFML\ACFMultilingual;
+use Hirasso\ACFML\Config;
 
 \define('ACFML', true);
 \define('ACFML_PATH', \plugin_dir_path(__FILE__));
 \define('ACFML_BASENAME', \plugin_basename(__FILE__));
 \define('ACFML_URL', \plugins_url('/', __FILE__));
 
-require_once(ACFML_PATH . 'vendor/autoload.php');
-require_once(ACFML_PATH . 'api.php');
+/**
+ * Require the autoloader
+ * - vendor/autoload.php in development (composer)
+ * - autoload.dist.php in production (not composer)
+ */
+require_once match(\is_readable(__DIR__ . '/vendor/autoload.php')) {
+    true => __DIR__ . '/vendor/autoload.php',
+    default => __DIR__ . '/autoload.dist.php'
+};
+
+/**
+ * The public API
+ */
+require_once(__DIR__ . '/api.php');
 
 /**
  * acfml

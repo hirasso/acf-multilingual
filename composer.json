@@ -1,22 +1,22 @@
 {
-    "name": "hirasso/rh-acf-multilingual",
-    "description": "Multilingual Support for WordPress with Advanced Custom Fields",
-    "type": "wordpress-plugin",
-    "license": "GPL-2.0-or-later",
-    "authors": [
-        {
-            "name": "Rasso Hilber",
-            "email": "mail@rassohilber.com"
-        }
-    ],
-    "autoload": {
-      "psr-4": {
-        "ACFML\\":"acfml"
-      }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^12.4",
-        "yoast/phpunit-polyfills": "^4.0",
-        "laravel/pint": "^1.25"
+  "name": "hirasso/acf-multilingual",
+  "description": "Multilingual Support for WordPress with Advanced Custom Fields",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Rasso Hilber",
+      "email": "mail@rassohilber.com"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Hirasso\\ACFML\\": "src"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^12.4",
+    "yoast/phpunit-polyfills": "^4.0",
+    "laravel/pint": "^1.25"
+  }
 }

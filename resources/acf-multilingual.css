@@ -1,5 +1,3 @@
-@import './inc/mixins';
-
 .acfml-multilingual-field > .acf-input > .acf-fields {
   border: none;
   background: none;
@@ -11,18 +9,31 @@
   padding-bottom: 0;
   border: none;
 }
-.acfml-multilingual-field.acfml-ui-style--tabs > .acf-input > .acf-fields > .acfml-field:not(.acfml-is-visible) {
-  @include visually-hidden;
+/**
+ * Visually hidden
+ */
+.acfml-multilingual-field.acfml-ui-style--tabs
+  > .acf-input
+  > .acf-fields
+  > .acfml-field:not(.acfml-is-visible) {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: -10000px;
+    visibility: hidden;
+    pointer-events: none;
 }
-[data-acfml-ui-style=columns] > .acf-input > .acf-fields {
+[data-acfml-ui-style="columns"] > .acf-input > .acf-fields {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  &:after { display: none; }
+  &:after {
+    display: none;
+  }
   gap: 1%;
 }
 
 .acfml-ui-style--tabs .acfml-field > .acf-label,
-[data-acfml-ui-style=columns] > .acf-label,
+[data-acfml-ui-style="columns"] > .acf-label,
 .acf-field-acfml-slug > .acf-label,
 .acf-field-acfml-lang-active > .acf-label {
   display: none;
@@ -50,7 +61,7 @@
   position: relative;
   overflow: hidden;
   border-radius: 3px;
-  --acfml-border: 1px solid rgba(0,0,0,0.2);
+  --acfml-border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .acfml-tabs:after {
   content: "";
@@ -62,7 +73,7 @@
   border-radius: 3px;
   border: var(--acfml-border);
 }
-[dir=rtl] .acfml-tabs {
+[dir="rtl"] .acfml-tabs {
   flex-direction: row-reverse;
 }
 .acfml-tab,
@@ -72,7 +83,7 @@
   cursor: pointer;
   display: block;
   position: relative;
-  color: rgb(68,68,68);
+  color: rgb(68, 68, 68);
   text-decoration: none;
   background: transparent;
   white-space: nowrap;
@@ -80,7 +91,7 @@
   z-index: 0;
   @include hover {
     color: var(--acfml-button-primary-background, #016087);
-    background: rgba(0,0,0,0.05);
+    background: rgba(0, 0, 0, 0.05);
   }
   &.is-active {
     background: var(--acfml-button-primary-background, #008dd4);
@@ -97,10 +108,10 @@
   border-left: var(--acfml-border);
 }
 .acfml-info-icon {
-  color: rgba(0,0,0,0.3);
+  color: rgba(0, 0, 0, 0.3);
   cursor: help;
   @include hover {
-    color: rgba(0,0,0,0.5);
+    color: rgba(0, 0, 0, 0.5);
   }
   margin-left: 0.3rem;
 }
@@ -113,7 +124,8 @@
   display: none;
 }
 
-.post-php, .post-new-php {
+.post-php,
+.post-new-php {
   .acfml-post-title input[type="text"] {
     padding: 3px 8px;
     font-size: 1.7em;
@@ -136,11 +148,10 @@
 .acfml-multilingual-post-type #titlediv {
   display: none;
 }
-.acf-fields>.acfml-post-title .acf-input-wrap {
+.acf-fields > .acfml-post-title .acf-input-wrap {
   padding: 2px;
   margin: -2px;
 }
-
 
 /*
 * Slugs
@@ -159,7 +170,7 @@
 .acfml-slug .acf-input-append .button:last-child {
   border-radius: 0 3px 3px 0;
 }
-[dir=rtl] .acfml-slug .acf-input-append .button:last-child {
+[dir="rtl"] .acfml-slug .acf-input-append .button:last-child {
   border-radius: 3px 0 0 3px;
 }
 .acfml-slug .acf-input-prepend {

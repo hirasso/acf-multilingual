@@ -1,6 +1,6 @@
 <?php
 
-namespace ACFML;
+namespace Hirasso\ACFML;
 
 class ACFMultilingual
 {
@@ -273,7 +273,7 @@ class ACFMultilingual
      */
     public function enqueue_admin_scripts()
     {
-        \wp_enqueue_script("$this->prefix-admin", $this->asset_uri("assets/admin.js"), ['jquery'], null, true);
+        \wp_enqueue_script("$this->prefix-admin", $this->asset_uri("resources/acf-multilingual.js"), ['jquery'], null, true);
         \wp_add_inline_script("$this->prefix-admin", $this->get_admin_inline_script(), "before");
     }
 
@@ -284,7 +284,7 @@ class ACFMultilingual
      */
     public function enqueue_admin_style()
     {
-        \wp_enqueue_style("$this->prefix-admin", $this->asset_uri("assets/admin.css"), [], null);
+        \wp_enqueue_style("$this->prefix-admin", $this->asset_uri("resources/acf-multilingual.css"), [], null);
     }
 
     /**
@@ -301,7 +301,7 @@ class ACFMultilingual
             'cookieHashForCurrentUri' => $this->get_cookie_hash_for_current_uri()
         ];
         ?><script id="acfml-settings"><?php \ob_start() ?>
-    var acfml = <?= \json_encode($settings) ?>;
+    var ACFMultilingual = <?= \json_encode($settings) ?>;
     <?php $script = \ob_get_clean(); ?></script><?php return $script;
     }
 
@@ -904,12 +904,8 @@ class ACFMultilingual
 
     /**
      * Simply replaces the language code in an URL, or strips it for the default language
-     *
-     * @param string $url
-     * @param string $requested_language
-     * @return string
      */
-    public function simple_convert_url(string $url, string $requested_language = null): string
+    public function simple_convert_url(string $url, ?string $requested_language = null): string
     {
         $url = $this->remove_default_language_from_url($url);
         $current_language = $this->get_language_in_url($url);
