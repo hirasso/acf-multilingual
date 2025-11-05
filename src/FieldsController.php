@@ -219,16 +219,14 @@ class FieldsController
         }
 
         $default_language = $this->acfml->get_default_language();
-        // This field's value will be autofilled by the monolingual value
-        $hook_name = "acf/load_value/key={$field['key']}_$default_language";
-        // A self-erasing hook, since filters would add up
-        // inside a repeater or flexible content field.
-        // https://gist.github.com/stevegrunwell/c8307af5b88310ac1c49f6fa91f62bcb
-        $self_erasing_hook = function () use ($value, $hook_name, &$self_erasing_hook) {
-            \remove_filter($hook_name, $self_erasing_hook);
-            return $value;
-        };
-        \add_filter($hook_name, $self_erasing_hook);
+        $untranslated_value = $value;
+
+        $this->add_filter_once(
+            "acf/load_value/key={$field['key']}_$default_language",
+            function ($translated_value) use ($untranslated_value) {
+                return !empty($translated_value) ? $translated_value : $untranslated_value;
+            }
+        );
 
         return $value;
     }
@@ -250,8 +248,8 @@ class FieldsController
     public function add_filter_once($hook, $callback, $priority = 10, $args = 1)
     {
         $singular = function () use ($hook, $callback, $priority, $args, &$singular) {
-            \call_user_func_array($callback, \func_get_args());
-            \remove_filter($hook, $singular, $priority, $args);
+            \remove_filter($hook, $singular, $priority);
+            return \call_user_func_array($callback, \func_get_args());
         };
 
         return \add_filter($hook, $singular, $priority, $args);
