@@ -703,13 +703,15 @@ class PostTypesController
         }
 
         // Allow posts to be set to non-public
-        $meta_query['acfml_lang_active'] = [
-            [
-                'key' => "acfml_lang_active_$language",
-                'value' => 1,
-                'type' => 'NUMERIC',
-            ]
-        ];
+        if (!\is_admin()) {
+            $meta_query['acfml_lang_active'] = [
+                [
+                    'key' => "acfml_lang_active_$language",
+                    'value' => 1,
+                    'type' => 'NUMERIC',
+                ]
+            ];
+        }
 
         // adjust orderby
         $orderby = $query->get('orderby');
