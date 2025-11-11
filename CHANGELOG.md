@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.2
+
+### Patch Changes
+
+- 334f808: Ignore "Active (language)" for posts when in the admin
+
 ## 3.0.1
 
 ### Patch Changes
