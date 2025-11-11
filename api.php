@@ -60,3 +60,24 @@ function acfml_get_languages(?string $format = null)
 {
     return \acfml()->get_languages($format);
 }
+
+/**
+ * Like ACF's get_field(), but with the language slug specified
+ *
+ * @param string $language        The language slug, e.g. "en" or "de"
+ * @param string $selector        The field name or key.
+ * @param string|int $post_id     The post_id of which the value is saved against.
+ * @param bool $format_value      Whether or not to format the value as described above.
+ * @param bool $escape_html       If we're formatting the value, make sure it's also HTML safe.
+ *
+ * @return mixed
+ */
+function acfml_get_field(
+    string $language,
+    string $selector,
+    int|string $post_id,
+    bool $format_value = true,
+    bool $escape_html = false
+) {
+    return \acfml()->get_field_in_language(...\func_get_args());
+}

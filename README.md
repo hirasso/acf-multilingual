@@ -94,7 +94,7 @@ This config will make:
 
 ## API
 
-To get an idea about what the plugin can do, it's probably quickest to have a look at [the API](https://github.com/hirasso/acf-multilingual/blob/main/src/api.php).
+To get an idea about what the plugin can do, it's probably quickest to have a look at [the API](https://github.com/hirasso/acf-multilingual/blob/main/api.php).
 
 ## Make built-in ACF fields multilingual
 

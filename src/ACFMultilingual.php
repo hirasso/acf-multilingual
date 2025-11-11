@@ -784,8 +784,7 @@ class ACFMultilingual
      */
     public function get_current_language(): string
     {
-        $language = $this->language ?? $this->get_default_language();
-        return $language;
+        return $this->language ?? $this->get_default_language();
     }
 
     /**
@@ -1582,6 +1581,26 @@ class ACFMultilingual
         $current_language = $this->get_current_language();
         \preg_match("/\[:$current_language](?P<translation>.+?)(?=(?:\[:|$))/", $translation, $matches);
         return $matches['translation'] ?? $translation;
+    }
+
+    /**
+     * Get a field for a lanuage
+     */
+    public function get_field_in_language(
+        string $language,
+        string $selector,
+        int|string $post_id,
+        bool $format_value = true,
+        bool $escape_html = false
+    ) {
+        $current_language = $this->language;
+        $this->language = $language;
+
+        $value = \get_field($selector, $post_id, $format_value, $escape_html);
+
+        $this->language = $current_language;
+
+        return $value;
     }
 
 }
