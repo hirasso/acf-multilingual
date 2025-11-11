@@ -17,19 +17,14 @@ class FieldsController
 
     private $prefix;
 
-    private $acfml = null;
-
     /**
      * Constructor
      *
-     * @param ACFMultilingual|null $acfml
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
-    public function __construct(ACFMultilingual $acfml)
+    public function __construct(private ACFMultilingual $acfml)
     {
 
         // inject main class
-        $this->acfml = $acfml;
         $this->prefix = $this->acfml->get_prefix();
         $this->add_hooks();
     }
@@ -313,13 +308,9 @@ class FieldsController
     }
 
     /**
-     * Field uses language tabs
-     *
-     * @param [type] $field
-     * @return void
-     * @author Rasso Hilber <mail@rassohilber.com>
+     * Get the ui style for a field
      */
-    private function get_field_ui_style($field)
+    private function get_field_ui_style(array $field): string
     {
         $ui_style = $field['acfml_ui_style'] ?? 'tabs';
         if (!$this->validate_ui_style($ui_style)) {
