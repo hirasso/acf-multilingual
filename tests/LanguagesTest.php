@@ -8,7 +8,9 @@ use Hirasso\ACFML\Config;
  */
 class AddGetLanguagesTest extends WP_UnitTestCase
 {
-    public function setUp()
+    private Config $config;
+
+    public function setUp(): void
     {
         parent::setUp();
         $config = $this->createMock(Config::class);
@@ -18,20 +20,16 @@ class AddGetLanguagesTest extends WP_UnitTestCase
 
     /**
      * makes is_admin() return true
-     *
-     * @return boolean
      */
-    private function is_admin_true()
+    private function spoof_is_admin_true()
     {
         \set_current_screen('edit-post');
     }
 
     /**
      * resets is_admin() to false
-     *
-     * @return boolean
      */
-    private function is_admin_false()
+    private function reset_spoof_is_admin_true()
     {
         unset($GLOBALS['current_screen']);
     }
@@ -195,10 +193,10 @@ class AddGetLanguagesTest extends WP_UnitTestCase
                 'name' => 'English'
             ]
         ];
-        $this->is_admin_true();
+        $this->spoof_is_admin_true();
         $acfml = new ACFMultilingual($this->config);
         $acfml->initialize();
-        $this->is_admin_false();
+        $this->reset_spoof_is_admin_true();
 
         $this->assertSame($acfml->get_current_language(), 'en');
     }

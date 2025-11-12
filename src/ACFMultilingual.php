@@ -50,7 +50,6 @@ class ACFMultilingual
      */
     public function initialize(): ?ACFMultilingual
     {
-
         // Instanciate admin class
         $this->admin = new Admin($this);
 
@@ -75,6 +74,7 @@ class ACFMultilingual
 
         $this->download_language_packs();
         $this->detect_language();
+
         $this->load_textdomain();
 
         \add_filter('locale', [$this, 'filter_frontend_locale']);
@@ -175,16 +175,16 @@ class ACFMultilingual
     /**
      * load_textdomain
      *
-     * Loads the plugin's translated strings similar to load_plugin_textdomain().
+     * Load the plugin's translated strings similar to load_plugin_textdomain().
      */
     public function load_textdomain(): void
     {
-
         $domain = 'acfml';
         $locale = \apply_filters('plugin_locale', \determine_locale(), $domain);
         $mofile = "$domain-$locale.mo";
 
         // Try to load from the languages directory first.
+        // @phpstan-ignore constant.notFound
         if (\load_textdomain($domain, WP_LANG_DIR . '/plugins/' . $mofile)) {
             return;
         }
@@ -1353,6 +1353,7 @@ class ACFMultilingual
         if (\is_array($log) || \is_object($log)) {
             $log = \print_r($log, true);
         }
+        // @phpstan-ignore constant.notFound
         $dir = WP_CONTENT_DIR;
         if (!\is_dir($dir)) {
             \mkdir($dir);

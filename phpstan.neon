@@ -8,6 +8,7 @@ parameters:
         - acf-multilingual.php
         - api.php
         - autoload.dist.php
+        - tests
     scanDirectories:
         - vendor
     ignoreErrors:

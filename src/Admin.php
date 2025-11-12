@@ -289,12 +289,14 @@ class Admin
      */
     public function add_notice_config_missing(): void
     {
-        $message = \wp_sprintf(
-            \__("[ACFML] No config file found. Please copy the file <code>acfml.config.sample.json</code> from the plugin root to your theme root, rename it to <code>acfml.config.json</code> and adjust your settings inside.", 'acfml')
-        );
-        $this->add_notice('config-missing', $message, [
-            'type' => 'warning'
-        ]);
+        \add_action('admin_init', function () {
+            $message = \wp_sprintf(
+                \__("[ACFML] No config file found. Please copy the file <code>acfml.config.sample.json</code> from the plugin root to your theme root, rename it to <code>acfml.config.json</code> and adjust your settings inside.", 'acfml')
+            );
+            $this->add_notice('config-missing', $message, [
+                'type' => 'warning'
+            ]);
+        });
     }
 
 }

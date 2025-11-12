@@ -27,6 +27,7 @@ function _cleanup_languages_dir()
     require_once ABSPATH . 'wp-admin/includes/file.php';
     global $wp_filesystem;
     \WP_Filesystem();
+    // @phpstan-ignore constant.notFound
     $wp_filesystem->delete(WP_LANG_DIR, true);
 }
 
@@ -38,9 +39,9 @@ function _manually_load_plugins()
     // Clean up the languages dir before running tests, so we can test downloading them
     \_cleanup_languages_dir();
     // require ACF, which is a dependency of ACFML
-    require_once(\dirname(\dirname(\dirname(__FILE__))) . '/advanced-custom-fields-pro/acf.php');
+    require_once(\dirname(\dirname(\dirname(__FILE__))) . '/advanced-custom-fields/acf.php');
     // require the main plugin file
-    require_once(\dirname(\dirname(__FILE__)) . '/acfml.php');
+    require_once(\dirname(\dirname(__FILE__)) . '/acf-multilingual.php');
     // don't autamatically load acfml in tests
     \remove_action('plugins_loaded', 'acfml');
 }

@@ -67,12 +67,6 @@ function acfml(): ACFMultilingual
     return $acfml;
 }
 
-/**
- * Initialize the plugin
- */
-function acfml_init(): void
-{
+\add_action('plugins_loaded', function () {
     \acfml();
-}
-
-\add_action('plugins_loaded', 'acfml_init'); // Instantiate
+});

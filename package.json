@@ -18,7 +18,15 @@
     "version": "pnpm changeset version && bin/cli.js version:patch",
     "install-wp-tests": "echo https://make.wordpress.org/cli/handbook/misc/plugin-unit-tests/#3-initialize-the-testing-environment-locally",
     "test:prepare": "composer install && bash bin/install-wp-tests.sh wordpress_test root 'root' localhost latest",
-    "test:php": "WP_TESTS_DIR=~/Documents/wp-tests-dir/wordpress-tests-lib ./vendor/bin/phpunit"
+    "test:php": "WP_TESTS_DIR=~/Documents/wp-tests-dir/wordpress-tests-lib ./vendor/bin/phpunit",
+    "wp-env": "wp-env",
+    "wp-env:cli": "pnpm run wp-env run cli --env-cwd=wp-content/plugins/acf-multilingual",
+    "wp-env:cli:tests": "pnpm run wp-env run tests-cli --env-cwd=wp-content/plugins/acf-multilingual",
+    "wp-env:open": "open http://localhost:9783",
+    "wp-env:open:tests": "open http://localhost:9784",
+    "test": "pnpm test:pest",
+    "test:pest": "pnpm run wp-env:cli:tests vendor/bin/pest --no-coverage",
+    "test:pest:ci": "pnpm run wp-env:cli:tests vendor/bin/pest --coverage-clover coverage.xml"
   },
   "babel": {
     "presets": [
@@ -39,6 +47,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.29.7",
     "@types/jquery": "^3.5.33",
+    "@wordpress/env": "^10.34.0",
     "fast-glob": "^3.3.3",
     "picocolors": "^1.1.1",
     "prettier": "^3.6.2",

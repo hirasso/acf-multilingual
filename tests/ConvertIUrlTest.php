@@ -10,7 +10,7 @@ class ConvertAndResolveUrlsTest extends WP_UnitTestCase
     */
     private ACFMultilingual $acfml;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->setup_acfml_instance();
@@ -35,7 +35,8 @@ class ConvertAndResolveUrlsTest extends WP_UnitTestCase
         ];
         $config->method('is_loaded')->willReturn(true);
         $this->acfml = new ACFMultilingual($config);
-        $this->acfml->initialize()->fully_initialize()->add_multilingual_object_types();
+        $this->acfml->initialize()?->fully_initialize();
+        $this->acfml->add_multilingual_object_types();
         $this->set_permalink_structure('/%postname%/');
     }
 
@@ -68,9 +69,8 @@ class ConvertAndResolveUrlsTest extends WP_UnitTestCase
 
     public function test_get_translated_post_permalink()
     {
-
         // Create a test post. The generated post_name should be 'test-resolve-url'
-        $post = self::factory()->post->create_and_get([
+        $post = $this->factory()->post->create_and_get([
             'post_title' => 'Test: Post Permalink'
         ]);
         // Manually insert the required fields for 'de'

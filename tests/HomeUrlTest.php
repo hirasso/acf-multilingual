@@ -8,13 +8,14 @@ use Hirasso\ACFML\Config;
  */
 class HomeUrlTest extends WP_UnitTestCase
 {
-    public function setUp()
+    private Config $config;
+
+    public function setUp(): void
     {
         parent::setUp();
         $config = $this->createMock(Config::class);
         $config->method('is_loaded')->willReturn(true);
         $this->config = $config;
-
     }
 
     public function test_home_url_current_language()
