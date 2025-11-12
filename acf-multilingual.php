@@ -14,7 +14,7 @@
 
 if (!\defined('ABSPATH')) {
     exit;
-} // Exit if accessed directly
+}
 
 use Hirasso\ACFML\ACFMultilingual;
 use Hirasso\ACFML\Config;
@@ -47,7 +47,6 @@ require_once(__DIR__ . '/api.php');
  *
  * Example: <?php $acfml = acfml(); ?>
  *
- * @param	void
  * @return ACFMultilingual
  */
 function acfml(): ACFMultilingual
@@ -68,4 +67,12 @@ function acfml(): ACFMultilingual
     return $acfml;
 }
 
-\add_action('plugins_loaded', 'acfml'); // Instantiate
+/**
+ * Initialize the plugin
+ */
+function acfml_init(): void
+{
+    \acfml();
+}
+
+\add_action('plugins_loaded', 'acfml_init'); // Instantiate

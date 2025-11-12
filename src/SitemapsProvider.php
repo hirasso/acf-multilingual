@@ -4,38 +4,27 @@ namespace Hirasso\ACFML;
 
 if (! \defined('ABSPATH')) {
     exit;
-} // Exit if accessed directly
+}
 
 /**
  * Sitemaps
  */
 class SitemapsProvider extends \WP_Sitemaps_Provider
 {
-    private $acfml = null;
-
     /**
      * Constructor
-     *
-     * @param ACFMultilingual|null $acfml
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
-    public function __construct(ACFMultilingual $acfml)
+    public function __construct(private ACFMultilingual $acfml)
     {
 
         // inject main class
-        $this->acfml       = $acfml;
         $this->name        = 'languages';
         $this->object_type = 'language';
     }
 
     /**
     * Gets a URL list for a sitemap.
-    *
-    * @since 5.5.0
-    *
-    * @param int    $page_num       Page of results.
-    * @param string $object_subtype Optional. Object subtype name. Default empty.
-    * @return array Array of URLs for a sitemap.
+    * @return array[]
     */
     public function get_url_list($page_num, $object_subtype = '')
     {
@@ -63,18 +52,11 @@ class SitemapsProvider extends \WP_Sitemaps_Provider
 
 
     /**
-     * Gets the URL of a sitemap entry.
-     *
-     * @since 5.5.0
-     *
-     * @global WP_Rewrite $wp_rewrite WordPress rewrite component.
-     *
-     * @param string $name The name of the sitemap.
-     * @param int    $page The page of the sitemap.
-     * @return string The composed URL for a sitemap entry.
+     * Get the URL of a sitemap entry.
      */
     public function get_sitemap_url($name, $page)
     {
+        /** @var \WP_Rewrite $wp_rewrite WordPress rewrite component. */
         global $wp_rewrite;
 
         // Accounts for cases where name is not included, ex: sitemaps-users-1.xml.
@@ -104,16 +86,14 @@ class SitemapsProvider extends \WP_Sitemaps_Provider
      * The returned data is used to populate the sitemap entries of the index.
      *
      * @since 5.5.0
-     *
-     * @return array[] Array of sitemap entries.
      */
-    public function get_sitemap_entries()
+    public function get_sitemap_entries(): array
     {
         global $wp_sitemaps;
         $sitemaps = [];
 
         $sitemaps[] = [
-            'loc' => $this->get_sitemap_url(null, 1),
+            'loc' => $this->get_sitemap_url('', 1),
         ];
 
         return $sitemaps;
@@ -121,11 +101,6 @@ class SitemapsProvider extends \WP_Sitemaps_Provider
 
     /**
      * Gets the max number of pages available for the object type.
-     *
-     * @since 5.5.0
-     *
-     * @param string $object_subtype Optional. Object subtype. Default empty.
-     * @return int Total number of pages.
      */
     public function get_max_num_pages($object_subtype = '')
     {

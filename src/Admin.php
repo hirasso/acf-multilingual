@@ -4,23 +4,17 @@ namespace Hirasso\ACFML;
 
 if (! \defined('ABSPATH')) {
     exit;
-} // Exit if accessed directly
+}
 
 class Admin
 {
-    private $acfml = null;
-
     /**
      * Constructor
-     *
-     * @param ACFMultilingual|null $acfml
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
-    public function __construct(ACFMultilingual $acfml)
+    public function __construct(private ACFMultilingual $acfml)
     {
 
-        // inject main class
-        $this->acfml = $acfml;
+
 
         \add_action('admin_notices', [$this, 'maybe_add_notice_acf_missing'], 9);
         \add_action('admin_notices', [$this, 'show_added_notices']);
@@ -29,10 +23,8 @@ class Admin
 
     /**
      * Must be called from ACFML
-     *
-     * @return void
      */
-    public function add_hooks()
+    public function add_hooks(): void
     {
         \add_action('admin_bar_menu', [$this, 'add_admin_bar_menu'], 100);
         \add_action('admin_init', [$this, 'maybe_set_admin_language']);
@@ -42,15 +34,11 @@ class Admin
     }
 
     /**
-     * Adds an admin notice
+     * Add an admin notice
      *
-     * @param string $key
-     * @param string $message
-     * @param string $type
-     * @param boolean $is_complex
-     * @return void
+     * @param array<string, mixed> $args
      */
-    public function add_notice($key, $message, $args = []): void
+    public function add_notice(string $key, string $message, array $args = []): void
     {
         // bail early if not in admin or in ajax
         if (!\is_admin() || \wp_doing_ajax()) {
@@ -72,9 +60,9 @@ class Admin
     /**
      * Get the transient name for the current user
      *
-     * @return void
+     * @return string
      */
-    private function get_transient_name()
+    private function get_transient_name(): string
     {
         $user_id = \get_current_user_id();
         return "acfml-admin-notices-$user_id";
@@ -85,8 +73,9 @@ class Admin
      *
      * @return void
      */
-    public function show_added_notices()
+    public function show_added_notices(): void
     {
+        /** @var array<string, array<string, mixed>> */
         $notices = \get_transient($this->get_transient_name()) ?: [];
         \delete_transient($this->get_transient_name());
         foreach ($notices as $notice) {
@@ -96,11 +85,8 @@ class Admin
 
     /**
      * Show an admin notice
-     *
-     * @param object $notice
-     * @return void
      */
-    public function show_notice(string $message, array $args = [])
+    public function show_notice(string $message, array $args = []): void
     {
         // if the messsage is naked, wrap it inside a <p>-tag
         if (\strpos($message, '<p>') === false) {
@@ -122,11 +108,8 @@ class Admin
 
     /**
      * Verifies a nonce for a certain action
-     *
-     * @param string $action
-     * @return bool
      */
-    public function verify_nonce($action): bool
+    public function verify_nonce(string $action): bool
     {
         $nonce = $_POST['_acfml_nonce'] ?? null;
         if (!$nonce) {
@@ -138,8 +121,6 @@ class Admin
     /**
      * Check for changes in the language settings.
      * Show a notice to flush the rewrite rules if a change was detected
-     *
-     * @return void
      */
     public function maybe_add_notice_flush_rewrite_rules(): void
     {
@@ -158,10 +139,8 @@ class Admin
 
     /**
      * Flushes Rewrite Rules if asked for it
-     *
-     * @return void
      */
-    public function maybe_flush_rewrite_rules()
+    public function maybe_flush_rewrite_rules(): void
     {
         // verify nonce
         if (!$this->verify_nonce('acfml_flush_rewrite_rules')) {
@@ -189,11 +168,8 @@ class Admin
 
     /**
      * Adds the admin bar menu
-     *
-     * @param \WP_Admin_Bar $wp_adminbar
-     * @return void
      */
-    public function add_admin_bar_menu(\WP_Admin_Bar $wp_adminbar)
+    public function add_admin_bar_menu(\WP_Admin_Bar $wp_adminbar): void
     {
         $current_language = $this->acfml->get_language_info($this->acfml->get_current_language());
 
@@ -228,10 +204,8 @@ class Admin
 
     /**
      * Set the admin language and reload
-     *
-     * @return void
      */
-    public function maybe_set_admin_language()
+    public function maybe_set_admin_language(): void
     {
         // bail early if this is an AJAX request
         if (\wp_doing_ajax()) {
@@ -273,10 +247,8 @@ class Admin
 
     /**
      * Renders a notice of ACF is not installed
-     *
-     * @return void
      */
-    public function maybe_add_notice_acf_missing()
+    public function maybe_add_notice_acf_missing(): void
     {
         if (\defined('ACF')) {
             return;
@@ -292,9 +264,6 @@ class Admin
 
     /**
      * Renders a notice if the permalink_structure is not set
-     *
-     * @return void
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
     public function maybe_add_notice_permalink_structure(): void
     {
@@ -317,11 +286,8 @@ class Admin
 
     /**
      * Show a notice if there is no config file
-     *
-     * @return void
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
-    public function add_notice_config_missing()
+    public function add_notice_config_missing(): void
     {
         $message = \wp_sprintf(
             \__("[ACFML] No config file found. Please copy the file <code>acfml.config.sample.json</code> from the plugin root to your theme root, rename it to <code>acfml.config.json</code> and adjust your settings inside.", 'acfml')

@@ -2,8 +2,6 @@
 
 /**
  * PHPUnit bootstrap file
- *
- * @package Rh_ACFMultilingual
  */
 
 $_tests_dir = \getenv('WP_TESTS_DIR');
@@ -21,11 +19,7 @@ if (! \file_exists($_tests_dir . '/includes/functions.php')) {
 require_once $_tests_dir . '/includes/functions.php';
 
 /**
- * Deletes a directory, using the WordPress Filesystem API
- *
- * @param string $path
- * @return void
- * @author Rasso Hilber <mail@rassohilber.com>
+ * Delete the languages directory
  */
 function _cleanup_languages_dir()
 {

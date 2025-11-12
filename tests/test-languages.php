@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Class AddGetLanguagesTest
- *
- * @package ACFMultilingual
- */
-
 use Hirasso\ACFML\ACFMultilingual;
 use Hirasso\ACFML\Config;
 
@@ -26,7 +20,6 @@ class AddGetLanguagesTest extends WP_UnitTestCase
      * makes is_admin() return true
      *
      * @return boolean
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
     private function is_admin_true()
     {
@@ -37,7 +30,6 @@ class AddGetLanguagesTest extends WP_UnitTestCase
      * resets is_admin() to false
      *
      * @return boolean
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
     private function is_admin_false()
     {

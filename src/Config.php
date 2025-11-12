@@ -4,15 +4,15 @@ namespace Hirasso\ACFML;
 
 if (! \defined('ABSPATH')) {
     exit;
-} // Exit if accessed directly
+}
 
 class Config
 {
-    public $languages = null;
-    public $post_types = null;
-    public $taxonomies = null;
+    public ?object $languages = null;
+    public ?object $post_types = null;
+    public ?object $taxonomies = null;
 
-    private $is_loaded = false;
+    private bool $is_loaded = false;
 
     public function __construct()
     {
@@ -22,7 +22,6 @@ class Config
      * Load the config file
      *
      * @return bool
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
     public function load(): bool
     {
@@ -52,7 +51,6 @@ class Config
      * Is the config loaded
      *
      * @return boolean
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
     public function is_loaded(): bool
     {

@@ -4,45 +4,36 @@ namespace Hirasso\ACFML;
 
 class ACFMultilingual
 {
-    private $prefix = 'acfml';
-    public $debug = false;
-    private $language = null;
-    private $languages = [];
+    private string $prefix = 'acfml';
+    public bool $debug = false;
+    private ?string $language = null;
+    /** @var array<string, array<string, mixed>> */
+    private array $languages = [];
 
     /**
      * Admin instance
-     *
-     * @var Admin
      */
-    public $admin;
+    public Admin $admin;
 
     /**
      * FieldsController instance
-     *
-     * @var FieldsController
      */
-    public $fields_controller;
+    public FieldsController $fields_controller;
 
     /**
      * PostTypesController instance
-     *
-     * @var PostTypesController
      */
-    public $post_types_controller;
+    public PostTypesController $post_types_controller;
 
     /**
      * TaxonomiesController instance
-     *
-     * @var TaxonomiesController
      */
-    public $taxonomies_controller;
+    public TaxonomiesController $taxonomies_controller;
 
     /**
      * Config Instance
-     *
-     * @var Config
      */
-    public $config;
+    public Config $config;
 
     /**
      * Empty constructor
@@ -56,7 +47,6 @@ class ACFMultilingual
      * Intialize function. Instead of the constructor
      *
      * @return ACFMultilingual|null
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
     public function initialize(): ?ACFMultilingual
     {
@@ -71,7 +61,7 @@ class ACFMultilingual
         }
 
         // adds the languages
-        $this->add_languages($this->config->languages);
+        $this->register_languages($this->config->languages);
 
         // bail early if there are no languages set
         if (empty($this->get_languages())) {
@@ -98,10 +88,8 @@ class ACFMultilingual
 
     /**
      * Fully initializes the plugin after the theme has been set up
-     *
-     * @return ACFMultilingual
      */
-    public function fully_initialize(): ACFMultilingual
+    public function fully_initialize(): void
     {
 
         // Instanciate classes
@@ -113,17 +101,12 @@ class ACFMultilingual
         $this->add_text_directions_to_languages();
         $this->admin->add_hooks();
         $this->add_hooks();
-
-        return $this;
     }
 
     /**
      * Add multilingual object types
-     *
-     * @return void
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
-    public function add_multilingual_object_types()
+    public function add_multilingual_object_types(): void
     {
         if ($this->config->post_types) {
             $this->post_types_controller->add_post_types($this->config->post_types);
@@ -135,10 +118,8 @@ class ACFMultilingual
 
     /**
      * Add filter and action hooks
-     *
-     * @return void
      */
-    private function add_hooks()
+    private function add_hooks(): void
     {
         \add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_style']);
         \add_action('acf/input/admin_enqueue_scripts', [$this, 'enqueue_admin_scripts']);
@@ -171,11 +152,8 @@ class ACFMultilingual
      * include
      *
      * Includes a file within the ACFML plugin.
-     *
-     * @param	string $filename The specified file.
-     * @return	void
      */
-    public function include($filename = '')
+    public function include(?string $filename = ''): void
     {
         $file_path = $this->get_file_path($filename);
         if (\file_exists($file_path)) {
@@ -187,13 +165,10 @@ class ACFMultilingual
      * get_path
      *
      * Returns the plugin path to a specified file.
-     *
-     * @param	string $filename The specified file.
-     * @return	string
      */
-    public function get_file_path($filename = '')
+    public function get_file_path(string $filename = ''): string
     {
-        return ACFML_PATH . \ltrim($filename, '/');
+        return (\defined('ACFML_PATH') ? ACFML_PATH : '') . \ltrim($filename, '/');
     }
 
 
@@ -201,39 +176,27 @@ class ACFMultilingual
      * load_textdomain
      *
      * Loads the plugin's translated strings similar to load_plugin_textdomain().
-     *
-     * @param	string $locale The plugin's current locale.
-     * @return	void
      */
-    public function load_textdomain()
+    public function load_textdomain(): void
     {
 
         $domain = 'acfml';
-        /**
-         * Filters a plugin's locale.
-         *
-         * @date	8/1/19
-         * @since	5.7.10
-         *
-         * @param 	string $locale The plugin's current locale.
-         * @param 	string $domain Text domain. Unique identifier for retrieving translated strings.
-         */
         $locale = \apply_filters('plugin_locale', \determine_locale(), $domain);
         $mofile = "$domain-$locale.mo";
 
         // Try to load from the languages directory first.
         if (\load_textdomain($domain, WP_LANG_DIR . '/plugins/' . $mofile)) {
-            return true;
+            return;
         }
 
         // Load from plugin lang folder.
-        return \load_textdomain($domain, $this->get_file_path('lang/' . $mofile));
+        \load_textdomain($domain, $this->get_file_path('lang/' . $mofile));
     }
 
     /**
      * Return Plugin Prefix
      *
-     * @return void
+     * @return string
      */
     public function get_prefix(): string
     {
@@ -243,7 +206,7 @@ class ACFMultilingual
     /**
      * Admin init
      *
-     * @return array
+     * @return array<int, string|false>
      */
     public function download_language_packs(): array
     {
@@ -268,10 +231,8 @@ class ACFMultilingual
 
     /**
      * Enqueues Admin Scripts
-     *
-     * @return void
      */
-    public function enqueue_admin_scripts()
+    public function enqueue_admin_scripts(): void
     {
         \wp_enqueue_script("$this->prefix-admin", $this->asset_uri("resources/acf-multilingual.js"), ['jquery'], null, true);
         \wp_add_inline_script("$this->prefix-admin", $this->get_admin_inline_script(), "before");
@@ -279,10 +240,8 @@ class ACFMultilingual
 
     /**
      * Enqueue Admin Style
-     *
-     * @return void
      */
-    public function enqueue_admin_style()
+    public function enqueue_admin_style(): void
     {
         \wp_enqueue_style("$this->prefix-admin", $this->asset_uri("resources/acf-multilingual.css"), [], null);
     }
@@ -290,9 +249,9 @@ class ACFMultilingual
     /**
      * Add an inline script
      *
-     * @param string
+     * @return string
      */
-    private function get_admin_inline_script()
+    private function get_admin_inline_script(): string
     {
         $settings = [
             'defaultLanguage' => $this->get_default_language(),
@@ -310,7 +269,7 @@ class ACFMultilingual
      *
      * @return string
      */
-    public function get_cookie_hash_for_current_uri()
+    public function get_cookie_hash_for_current_uri(): string
     {
         $uri = $_SERVER['REQUEST_URI'];
         $uri = \remove_query_arg('message', $uri);
@@ -319,11 +278,8 @@ class ACFMultilingual
 
     /**
      * Get an admin cookie
-     *
-     * @param string $key
-     * @return object|null
      */
-    public function get_admin_cookie(string $key): ?object
+    public function get_admin_cookie(string $key): object|null|false
     {
         $cookie_name = $key . "_" . $this->get_cookie_hash_for_current_uri();
         $cookie = $_COOKIE[$cookie_name] ?? "";
@@ -332,15 +288,11 @@ class ACFMultilingual
 
     /**
      * Get home url in requested or default language
-     *
-     * @param string $path
-     * @param string|null $lang
-     * @return string
      */
     public function home_url(string $path = '', ?string $lang = null): string
     {
         $home_url = \home_url();
-        if (!$lang) {
+        if (empty($lang)) {
             $lang = $this->get_current_language();
         }
         if ($lang === $this->get_default_language()) {
@@ -351,13 +303,10 @@ class ACFMultilingual
 
     /**
      * Helper function to get versioned asset urls
-     *
-     * @param string $path
-     * @param string
      */
-    private function asset_uri($path): string
+    private function asset_uri(string $path): string
     {
-        $uri = ACFML_URL . $path;
+        $uri = (\defined('ACFML_URL') ? ACFML_URL : '') . $path;
         $file = $this->get_file_path($path);
         if (\file_exists($file)) {
             $version = \filemtime($file);
@@ -368,11 +317,8 @@ class ACFMultilingual
 
     /**
      * Helper function to transform an array to an object
-     *
-     * @param array $array
-     * @return object
      */
-    public function to_object($array): ?object
+    public function to_object(mixed $array): ?object
     {
         return \json_decode(\json_encode($array));
     }
@@ -393,13 +339,8 @@ class ACFMultilingual
 
     /**
      * Get a template
-     *
-     * @param string $template_name
-     * @param mixed $value
-     * @param boolean $allow_filter
-     * @return string
      */
-    public function get_template($template_name, $value = null, $allow_filter = true): string
+    public function get_template(string $template_name, mixed $value = null, bool $allow_filter = true): string
     {
         $value = $this->to_object($value);
         $path = $this->get_file_path("templates/$template_name.php");
@@ -420,10 +361,10 @@ class ACFMultilingual
     /**
      * Get all activated languages
      *
-     * @param string $format    'full' or 'slug'
-     * @return array
+     * @param string $format 'full' or 'slug'
+     * @return array<int|string, mixed>
      */
-    public function get_languages($format = 'full'): array
+    public function get_languages(string $format = 'full'): array
     {
         $languages = $this->languages;
         if ($format === 'slug') {
@@ -434,26 +375,19 @@ class ACFMultilingual
 
     /**
      * Add languages
-     *
-     * @param object|null $languages
-     * @return void
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
-    private function add_languages(?object $languages): void
+    private function register_languages(?object $languages): void
     {
         if (empty($languages)) {
             return;
         }
         foreach ($languages as $key => $language) {
-            $this->add_language($key, $language->locale ?? $key, $language->name ?? null);
+            $this->register_language($key, $language->locale ?? $key, $language->name ?? null);
         }
     }
 
     /**
      * Adds text directions to languages
-     *
-     * @return void
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
     private function add_text_directions_to_languages(): void
     {
@@ -469,17 +403,12 @@ class ACFMultilingual
      * @param string $slug          e.g. 'en' or 'de'
      * @param string|null $locale   e.g. 'en_US' or 'de_DE'
      * @param string|null $name     e.g. 'English' or 'Deutsch'
-     * @return array
+     * @return array<string, string|null>
      */
-    public function add_language(string $slug, ?string $locale = null, ?string $name = null): array
+    public function register_language(string $slug, ?string $locale = null, ?string $name = null): array
     {
-
-        if (!$locale) {
-            $locale = $slug;
-        }
-        if (!$name) {
-            $name = $slug;
-        }
+        $locale ??= $slug;
+        $name ??= $slug;
 
         $language = [
             'slug' => $slug,
@@ -489,6 +418,7 @@ class ACFMultilingual
         ];
 
         $this->languages[$slug] = $language;
+
         return $language;
     }
 
@@ -498,10 +428,6 @@ class ACFMultilingual
      * Switching the locale seems to be an expensive operation,
      * so this is being stored in the language information when
      * being added
-     *
-     * @param string $locale
-     * @return string
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
     public function get_text_direction(string $locale): string
     {
@@ -518,9 +444,6 @@ class ACFMultilingual
 
     /**
      * Checks if a language is enabled
-     *
-     * @param string $language
-     * @return boolean
      */
     public function is_language_enabled(string $language): bool
     {
@@ -529,6 +452,8 @@ class ACFMultilingual
 
     /**
      * Get converted URLs for all languages, based on a given URL
+     *
+     * @return array<string, string>
      */
     public function get_converted_urls(?string $url = null): array
     {
@@ -543,7 +468,7 @@ class ACFMultilingual
     /**
      * Generate a language switcher for use in the frontend.
      *
-     * @param array|null $args          An array with settings for your language switcher. Look at the wp_parse_args below
+     * @param array<string, mixed>|null $args          An array with settings for your language switcher. Look at the wp_parse_args below
      *                                  to see the default settings.
      *
      *                                  - format:
@@ -563,7 +488,7 @@ class ACFMultilingual
      *                                      – 'https://...': show translations for that url
      *                                  - element_class: overwrite the class of the language switcher html element(s)
      *
-     * @return mixed                    Either a html string or an array
+     * @return array<int|string, mixed>|string|false                    Either a html string or an array
      */
     public function get_language_switcher(?array $args = [])
     {
@@ -631,7 +556,6 @@ class ACFMultilingual
                     'element_id' => "acfml-language-dropdown-$dropdown_count",
                     'args' => $args,
                 ]);
-                break;
             case 'list':
             case 'list_items':
                 $list_count++;
@@ -641,46 +565,23 @@ class ACFMultilingual
                     'element_id' => "acfml-language-list-$list_count",
                     'args' => $args,
                 ]);
-                break;
         }
         // return raw
         return $languages;
     }
 
     /**
-     * Get non-default languages
-     *
-     * @param $format
-     * @return array
-     */
-    public function get_non_default_languages(string $format = 'full'): array
-    {
-        $languages = $this->get_languages();
-        $languages = \array_filter($languages, function ($language) {
-            return $language['is_default'] !== true;
-        });
-        if ($format === 'slug') {
-            $languages = \array_column($languages, 'slug');
-        }
-        // cleanup array keys
-        return \array_merge($languages);
-    }
-
-    /**
      * Get information for a language iso key
-     *
-     * @param string $key    e.g. 'en' or 'de'
-     * @return array|null
      */
-    public function get_language_info(string $key): ?array
+    public function get_language_info(string $language_slug): ?array
     {
-        return $this->get_languages()[$key] ?? null;
+        return $this->get_languages()[$language_slug] ?? null;
     }
 
     /**
      * Get default language
      *
-     * @param string|null
+     * @return string|null
      */
     public function get_default_language(): ?string
     {
@@ -690,9 +591,6 @@ class ACFMultilingual
 
     /**
      * Check if a language is the default language
-     *
-     * @param string $language
-     * @return boolean
      */
     public function is_default_language(string $language): bool
     {
@@ -701,9 +599,6 @@ class ACFMultilingual
 
     /**
      * Check if a given language is the current language
-     *
-     * @param string $language
-     * @return boolean
      */
     public function is_current_language(string $language): bool
     {
@@ -752,11 +647,8 @@ class ACFMultilingual
 
     /**
      * Switch to a langauge
-     *
-     * @param string $language    the slug of the language, e.g. 'en' or 'de'
-     * @return string|null
      */
-    public function switch_to_language($language): ?string
+    public function switch_to_language(string $language): ?string
     {
         $languages = $this->get_languages('slug');
         if (!\in_array($language, $languages)) {
@@ -799,15 +691,9 @@ class ACFMultilingual
 
     /**
     * Convert an URL for a language
-    *
-    * @param string $url
-    * @param string $language
-    *
-    * @return string $url
     */
     public function convert_url(?string $url = null, ?string $requested_language = null): string
     {
-
         $url = $this->remove_default_language_from_url($url);
 
         // fill in defaults
@@ -865,8 +751,8 @@ class ACFMultilingual
         if ($translated_object_url) {
             /**
              * append any possible stuff from the original URL, like:
-             *    - https://your-site.com/[...]/custom-endpoint/
-             *    - https://your-site.com/[...]?json=true&paged=2
+             *    - https://example.com/[...]/custom-endpoint/
+             *    - https://example.com/[...]?json=true&paged=2
              */
             if (
                 \strpos($url, $untranslated_object_url) === 0 &&
@@ -882,12 +768,8 @@ class ACFMultilingual
     }
 
     /**
-     * Converts e.g. https://site.com/{default_language_slug}/my-slug/ to https://site.com/my-slug/
+     * Convert e.g. https://example.com/{default_language_slug}/my-slug/ to https://example.com/my-slug/
      * (the same URL without the default language slug, if present)
-     *
-     * @param string $url
-     * @return string
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
     private function remove_default_language_from_url(string $url): string
     {
@@ -917,7 +799,7 @@ class ACFMultilingual
     /**
      * Get all link filters
      *
-     * @return Array
+     * @return array<string, array<string, int>>
      */
     private function get_link_filters(): array
     {
@@ -989,11 +871,8 @@ class ACFMultilingual
 
     /**
      * Converts the current URL to a requested language
-     *
-     * @param string $language
-     * @param string
      */
-    public function convert_current_url($language): string
+    public function convert_current_url(string $language): string
     {
         $url = $this->convert_url($this->get_current_url(), $language);
         return $url;
@@ -1001,10 +880,8 @@ class ACFMultilingual
 
     /**
      * Detect language information in URL
-     *
-     * @param string|null the detected language
      */
-    public function get_language_in_url($url): ?string
+    public function get_language_in_url(?string $url): ?string
     {
         $url = \untrailingslashit($url);
         $path = \str_replace((string) \home_url(), '', $url);
@@ -1017,7 +894,7 @@ class ACFMultilingual
     /**
      * Get current URL from $_SERVER
      *
-     * @param string $url
+     * @return string
      */
     private function get_current_url(): string
     {
@@ -1027,9 +904,6 @@ class ACFMultilingual
 
     /**
      * Filter locale in frontend
-     *
-     * @param [type] $locale
-     * @return string|null
      */
     public function filter_frontend_locale(string $locale): ?string
     {
@@ -1053,10 +927,10 @@ class ACFMultilingual
      * Prepend language information to all rewrite rules
      *
      * @link https://wordpress.stackexchange.com/a/238369/18713
-     * @param array $rules
-     * @return array
+     * @param array<string, string> $rules
+     * @return array<string, string>
      */
-    public function rewrite_rules_array($rules): array
+    public function rewrite_rules_array(array $rules): array
     {
         $new_rules = [];
 
@@ -1091,11 +965,8 @@ class ACFMultilingual
 
     /**
      * Filter for 'the_content'
-     *
-     * @param string $value
-     * @param string
      */
-    public function format_acf_field_wysiwyg($value): string
+    public function format_acf_field_wysiwyg(string $value): string
     {
         return $this->convert_urls_in_string($value);
     }
@@ -1103,13 +974,13 @@ class ACFMultilingual
     /**
      * Filter ACF value for field type 'link'
      *
-     * @param string|array $value
-     * @return string|array
+     * @param string|array<string, mixed>|null $value
+     * @return string|array<string, mixed>|null
      */
-    public function format_acf_field_link($value)
+    public function format_acf_field_link($value): string|array|null
     {
         if (empty($value)) {
-            return;
+            return null;
         }
         // handle return type 'array'
         if (!empty($value['url'])) {
@@ -1127,8 +998,8 @@ class ACFMultilingual
     /**
      * Format ACF field 'Page Link'
      *
-     * @param string|array|null $value
-     * @return string|array|null
+     * @param string|array<int|string, mixed>|null $value
+     * @return string|array<int|string, mixed>|null
      */
     public function format_acf_field_page_link($value)
     {
@@ -1153,9 +1024,6 @@ class ACFMultilingual
 
     /**
      * Convert URLs in Strings
-     *
-     * @param string $string
-     * @param string
      */
     public function convert_urls_in_string(string $string, ?string $lang = null): string
     {
@@ -1172,9 +1040,6 @@ class ACFMultilingual
 
     /**
      * Checks if an URL is internal
-     *
-     * @param string $url
-     * @return boolean
      */
     private function is_internal_url(string $url): bool
     {
@@ -1191,37 +1056,18 @@ class ACFMultilingual
     }
 
     /**
-     * Checks if an URL starts with another URL
+     * Check if an URL starts with another URL
      *
      * Protocol agnostic. e.g.:
-     * "http://my-site.com/my-path/ > "https://my-site.com/" resolves to true
-     *
-     * @param string $haystack_url
-     * @param string $needle_url
-     * @return boolean
+     * "http://example/my-path/ > "https://example.com/" resolves to true
      */
     private function url_starts_with(string $haystack_url, string $needle_url): bool
     {
-        return $this->string_starts_with(\set_url_scheme($haystack_url, 'http'), \set_url_scheme($needle_url, 'http'));
-    }
-
-    /**
-     * Tests if a string starts with a sub-string
-     *
-     * @param string $string
-     * @param string $sub_string
-     * @return boolean
-     */
-    private function string_starts_with(string $string, string $sub_string): bool
-    {
-        return \stripos($string, $sub_string) === 0;
+        return \str_starts_with(\set_url_scheme($haystack_url, 'http'), \set_url_scheme($needle_url, 'http'));
     }
 
     /**
      * Tests if an URL points to a dir or file on the server
-     *
-     * @param string $url
-     * @return boolean
      */
     private function url_points_to_physical_location(string $url): bool
     {
@@ -1243,9 +1089,6 @@ class ACFMultilingual
      * – removes home url
      * – removes query
      * – removes leading and trailing slashes
-     *
-     * @param string $url
-     * @param string
      */
     private function get_path_from_home(string $url): string
     {
@@ -1261,10 +1104,6 @@ class ACFMultilingual
 
     /**
      * Uses built-in WP functionality to parse and query for any given internal URL
-     *
-     * @param string|null $url
-     * @param string|null $language
-     * @return \WP_Query|null
      */
     private function resolve_url(?string $url = null): ?\WP_Query
     {
@@ -1386,10 +1225,10 @@ class ACFMultilingual
     /**
      * Convert sitemap entries urls
      *
-     * @param array $entry
-     * @return array
+     * @param array<string, mixed> $entry
+     * @return array<string, mixed>
      */
-    public function sitemaps_index_entry($entry): array
+    public function sitemaps_index_entry(array $entry): array
     {
         $entry['loc'] = $this->simple_convert_url($entry['loc']);
         return $entry;
@@ -1428,7 +1267,7 @@ class ACFMultilingual
         // get the clean URL (without e.g. [...]/{default_language_slug}/)
         $redirect_url = $this->remove_default_language_from_url($url);
 
-        // redirects URLs like https://my-site.com/{default_language_slug}/my-post/ to https://my-site.com/my-post/
+        // redirects URLs like https://example.com/{default_language_slug}/my-post/ to https://example.com/my-post/
         if ($url !== $redirect_url) {
             \wp_redirect($redirect_url);
             exit;
@@ -1437,13 +1276,8 @@ class ACFMultilingual
 
     /**
      * Add the current language to admin-ajax.php
-     *
-     * @param string $url
-     * @param string $path
-     * @param int $blog_id
-     * @return string
      */
-    public function convert_admin_ajax_url($url, $path, $blog_id): string
+    public function convert_admin_ajax_url(string $url, string $path, ?int $blog_id): string
     {
         if (\strpos($path, 'admin-ajax.php') === false) {
             return $url;
@@ -1470,10 +1304,6 @@ class ACFMultilingual
 
     /**
      * Detect if the settings of ACFML have changed
-     *
-     * @param string $postfix
-     * @return boolean
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
     public function settings_have_changed(string $postfix): bool
     {
@@ -1485,10 +1315,6 @@ class ACFMultilingual
 
     /**
      * Saves a hash of the current settings in the database
-     *
-     * @param string $postfix
-     * @return void
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
     public function save_hashed_settings(string $postfix): void
     {
@@ -1499,10 +1325,9 @@ class ACFMultilingual
     /**
      * Converts an object to an array
      *
-     * @param [object] $object
-     * @return array
+     * @return array<string, mixed>
      */
-    public function to_array($object)
+    public function to_array(mixed $object): array
     {
         if (!$object || $object === true) {
             return [];
@@ -1514,7 +1339,6 @@ class ACFMultilingual
      * Detect if running WP-CLI
      *
      * @return boolean
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
     private function is_wp_cli(): bool
     {
@@ -1523,13 +1347,8 @@ class ACFMultilingual
 
     /**
      * Logs custom messages to debug.log
-     *
-     * @param [type] $log
-     * @param string $log_file
-     * @return void
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
-    public function log($log, $log_file = 'debug.log')
+    public function log(mixed $log, string $log_file = 'debug.log'): void
     {
         if (\is_array($log) || \is_object($log)) {
             $log = \print_r($log, true);
@@ -1546,11 +1365,6 @@ class ACFMultilingual
      * Filter the language attributes to possibly add 'dir="ltr"'
      *
      * Enables full support for postcss-logical and postcss-dir-pseudo-class
-     *
-     * @param string $output
-     * @param string $doctype
-     * @return string
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
     public function language_attributes(string $output, string $doctype): string
     {
@@ -1570,11 +1384,6 @@ class ACFMultilingual
      * Convert qtranslate-like strings to the current language:
      *
      *  - [:de]Website Durchsuchen[:en]Search Website[:]
-     *
-     * @param string $translation
-     * @param string $text
-     * @param string $domain
-     * @return string
      */
     public function gettext_pick_language(string $translation, string $text, string $domain): string
     {
@@ -1592,13 +1401,12 @@ class ACFMultilingual
         int|string $post_id,
         bool $format_value = true,
         bool $escape_html = false
-    ) {
-        $current_language = $this->language;
-        $this->language = $language;
+    ): mixed {
+        $this->switch_to_language($language);
 
         $value = \get_field($selector, $post_id, $format_value, $escape_html);
 
-        $this->language = $current_language;
+        $this->reset_language();
 
         return $value;
     }

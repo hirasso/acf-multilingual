@@ -3,6 +3,9 @@
 
 /**
  * This function is documented in acfml.php > get_language_switcher
+ *
+ * @param array<string, mixed>|null $args
+ * @return array<int|string, mixed>|string|false
  */
 function acfml_get_language_switcher(?array $args = [])
 {
@@ -19,6 +22,8 @@ function acfml_convert_url(?string $url = null, ?string $lang = null): string
 
 /**
  * This function is documented in acfml.php > get_converted_urls
+ *
+ * @return array<string, string>
  */
 function acfml_get_converted_urls(?string $url = null): array
 {
@@ -28,8 +33,7 @@ function acfml_get_converted_urls(?string $url = null): array
 /**
  * This function is documented in inc/class.post-types-controller.php > get_post_urls
  *
- * @param WP_Post $post
- * @return array
+ * @return array<string, string>
  */
 function acfml_get_post_permalinks(WP_Post $post): array
 {
@@ -48,15 +52,17 @@ function acfml_home_url(string $path = '', ?string $lang = null): string
 /**
  * This function is documented in acfml.php > get_curret_language
  */
-function acfml_get_current_language()
+function acfml_get_current_language(): string
 {
     return \acfml()->get_current_language();
 }
 
 /**
  * This function is documented in acfml.php > get_languages
+ *
+ * @return array<int|string, mixed>
  */
-function acfml_get_languages(?string $format = null)
+function acfml_get_languages(?string $format = null): array
 {
     return \acfml()->get_languages($format);
 }

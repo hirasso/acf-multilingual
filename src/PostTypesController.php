@@ -4,42 +4,33 @@ namespace Hirasso\ACFML;
 
 if (! \defined('ABSPATH')) {
     exit;
-} // Exit if accessed directly
+}
 
 class PostTypesController
 {
-    private $prefix;
-    private $default_language;
+    private ?string $default_language = null;
 
-    private $multilingual_post_types = [];
+    /** @var array<string, true|array> */
+    private array $multilingual_post_types = [];
 
-    private $field_group_key;
+    private string $field_group_key;
 
-    private $title_field_name = "acfml_post_title";
-    private $title_field_key;
+    private string $title_field_name = "acfml_post_title";
+    private string $title_field_key;
 
-    private $slug_field_name = "acfml_slug";
-    private $slug_field_key;
+    private string $slug_field_name = "acfml_slug";
+    private string $slug_field_key;
 
-    private $lang_active_field_name = "acfml_lang_active";
-    private $lang_active_field_key;
-
-    private $acfml = null;
+    private string $lang_active_field_name = "acfml_lang_active";
+    private string $lang_active_field_key;
 
     /**
      * Constructor
-     *
-     * @param ACFMultilingual|null $acfml
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
-    public function __construct(ACFMultilingual $acfml)
+    public function __construct(private ACFMultilingual $acfml)
     {
 
-        // inject main class
-        $this->acfml = $acfml;
-
         // variables
-        $this->prefix = $this->acfml->get_prefix();
         $this->default_language = $this->acfml->get_default_language();
 
         $this->field_group_key    = "group_{$this->title_field_name}";
@@ -50,7 +41,7 @@ class PostTypesController
         \add_filter('rewrite_rules_array', [$this, 'rewrite_rules_array']);
 
         // query filters
-        \add_filter('pre_get_posts', [$this, 'pre_get_posts'], 999);
+        \add_action('pre_get_posts', [$this, 'pre_get_posts'], 999);
 
         \add_filter('query', [$this, 'query__get_page_by_path']);
 
@@ -65,8 +56,8 @@ class PostTypesController
 
         \add_filter("acf/load_value/key={$this->title_field_key}_{$this->default_language}", [$this, "load_value_default_post_title"], 10, 3);
         \add_filter("acf/validate_value/key={$this->title_field_key}_{$this->default_language}", [$this, "validate_value_default_post_title"], 10, 4);
-        \add_action("acf/validate_value/key={$this->title_field_key}_{$this->default_language}", [$this, "validate_value_default_post_title"], 10, 4);
-        \add_filter("acf/update_value/key={$this->title_field_key}_{$this->default_language}", [$this, "update_value_default_post_title"], 10, 4);
+        \add_filter("acf/validate_value/key={$this->title_field_key}_{$this->default_language}", [$this, "validate_value_default_post_title"], 10, 4);
+        \add_filter("acf/update_value/key={$this->title_field_key}_{$this->default_language}", [$this, "update_value_default_post_title"], 10);
         \add_filter("acf/load_value/key=$this->slug_field_key", [$this, 'load_value_acfml_slug']);
 
         \add_action('save_post', [$this, 'save_post'], 20);
@@ -78,12 +69,8 @@ class PostTypesController
 
     /**
      * Adds multilingual post types
-     *
-     * @param object $post_types
-     * @return void
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
-    public function add_post_types(object $post_types)
+    public function add_post_types(object $post_types): void
     {
         foreach ($post_types as $post_type_name => $args) {
             if ($args === false) {
@@ -96,12 +83,8 @@ class PostTypesController
 
     /**
      * Add a post type for translating the title and slugs
-     *
-     * @param string $post_type
-     * @param array|null $args
-     * @return void
      */
-    public function add_post_type(string $post_type, ?array $args = [])
+    public function add_post_type(string $post_type, ?array $args = []): void
     {
         global $wp_post_types;
         // attachments are not supported. They are horrible edge cases :P
@@ -114,6 +97,7 @@ class PostTypesController
         }
         // add the post type and it's arguments to the array
         $this->multilingual_post_types[$post_type] = $args;
+
         // parse translated post type labels
         $language = $this->acfml->get_current_language();
         $pt_object = \get_post_type_object($post_type);
@@ -125,9 +109,6 @@ class PostTypesController
 
     /**
      * Get multilingual post types
-     *
-     * @param $format
-     * @return array
      */
     public function get_multilingual_post_types(?string $format = 'names', $check_supports_title = true): array
     {
@@ -144,12 +125,8 @@ class PostTypesController
 
     /**
      * Check if a given post type is multilingual
-     *
-     * @param string $post_type
-     * @param bool $check_supports_title
-     * @return boolean
      */
-    public function is_multilingual_post_type($post_type, $check_supports_title = false): bool
+    public function is_multilingual_post_type(string $post_type, ?bool $check_supports_title = false): bool
     {
         $post_types = $this->get_multilingual_post_types('names', $check_supports_title);
         return \in_array($post_type, $post_types);
@@ -158,23 +135,20 @@ class PostTypesController
     /**
      * Makes post type archives multilingual. Looks for the custom property acfml->lang->archive_slug in the
      * post type object and adds possibly found slug translations to the regex
-     *
-     * @param Array $rules
-     * @param String $post_type
-     * @return Array
      */
-    private function multilingual_archive_slugs(array $rules, String $post_type): array
+    private function multilingual_archive_slugs(array $rules, string $post_type): array
     {
         $pt_object = \get_post_type_object($post_type);
         $has_archive = $pt_object->has_archive ?? null;
-        if (!$has_archive) {
+        $settings = $this->multilingual_post_types[$post_type] ?? null;
+        if (!$has_archive || \is_bool($settings)) {
             return $rules;
         }
 
         $default_slug = \is_string($has_archive) ? $has_archive : $post_type;
 
         $settings = $this->multilingual_post_types[$post_type];
-        $acfml_archive_slugs = \array_column($settings, 'archive_slug') ?? null;
+        $acfml_archive_slugs = \array_column($settings, 'archive_slug');
         if (empty($acfml_archive_slugs)) {
             return $rules;
         }
@@ -198,18 +172,14 @@ class PostTypesController
     * Makes post type rewrite slugs multilingual.
     * Looks for the custom property acfml->lang->rewrite_slug in the post type object
     * and adds possibly found slug translations to the regex
-    *
-    * @param Array $rules
-    * @param String $post_type
-    * @return Array
     */
-    private function multilingual_rewrite_slugs(array $rules, String $post_type): array
+    private function multilingual_rewrite_slugs(array $rules, string $post_type): array
     {
         $pt_object = \get_post_type_object($post_type);
         $default_slug = $pt_object->rewrite['slug'] ?? $post_type;
 
         $settings = $this->multilingual_post_types[$post_type];
-        $acfml_rewrite_slugs = \array_column($settings, 'rewrite_slug') ?? null;
+        $acfml_rewrite_slugs = \array_column($settings, 'rewrite_slug');
         if (empty($acfml_rewrite_slugs)) {
             return $rules;
         }
@@ -231,10 +201,8 @@ class PostTypesController
 
     /**
      * Adds custom fields for the title, slug, active languages
-     *
-     * @return void
      */
-    public function setup_acf_fields()
+    public function setup_acf_fields(): void
     {
 
         $post_types = $this->get_multilingual_post_types();
@@ -379,10 +347,6 @@ class PostTypesController
 
     /**
      * Check if a language for a post is set to public
-     *
-     * @param string $lang
-     * @param integer $post_id
-     * @return boolean
      */
     public function is_language_public(string $lang, int $post_id): bool
     {
@@ -394,12 +358,8 @@ class PostTypesController
 
     /**
      * Filter title of post
-     *
-     * @param string $title
-     * @param Int $post_id
-     * @param string
      */
-    public function single_post_title($title, $post)
+    public function single_post_title(string $title, mixed $post): string
     {
         $lang = $this->acfml->get_current_language();
         if (!$post) {
@@ -412,13 +372,8 @@ class PostTypesController
 
     /**
      * Load Default Value
-     *
-     * @param Mixed $value
-     * @param Int $post_id
-     * @param Array $field
-     * @return Mixed
      */
-    public function load_value_default_post_title($value, $post_id, $field)
+    public function load_value_default_post_title(mixed $value, int|string $post_id, array $field): mixed
     {
         if ($value) {
             return $value;
@@ -432,14 +387,8 @@ class PostTypesController
 
     /**
      * Validate the default post title
-     *
-     * @param bool $valid
-     * @param string $value
-     * @param array $field
-     * @param [type] $input_name
-     * @return mixed
      */
-    public function validate_value_default_post_title($valid, $value, $field, $input_name)
+    public function validate_value_default_post_title(mixed $valid, string $value, array $field, mixed $input_name): mixed
     {
         if (!\trim($value)) {
             $valid = false;
@@ -449,26 +398,18 @@ class PostTypesController
 
     /**
      * Trim the default post title
-     *
-     * @param mixed $value
-     * @param int $post_id
-     * @param array $field
-     * @param mixed $original
-     * @return mixed
      */
-    public function update_value_default_post_title($value, $post_id, $field, $original)
+    public function update_value_default_post_title(mixed $value): mixed
     {
-        $value = \trim($value);
-        return $value;
+        return \is_string($value)
+            ? \trim($value)
+            : $value;
     }
 
     /**
      * Filter Admin Body Class
-     *
-     * @param string $class
-     * @param string
      */
-    public function admin_body_class($class): string
+    public function admin_body_class(mixed $class): mixed
     {
         global $pagenow, $typenow;
         if (!\in_array($pagenow, ['post.php', 'post-new.php'])) {
@@ -482,12 +423,8 @@ class PostTypesController
 
     /**
      * Update a post's slugs
-     *
-     * @param int $post_id
-     * @global string $locale
-     * @return void
      */
-    public function save_post($post_id): void
+    public function save_post(int $post_id): void
     {
         global $locale;
 
@@ -565,13 +502,8 @@ class PostTypesController
 
     /**
      * Get a unique post slug for a post, respecting the language
-     *
-     * @param string $slug
-     * @param WP_Post $post_id
-     * @param string $lang
-     * @param string The (hopefully) unique post slug
      */
-    public function get_unique_post_slug(String $slug, \WP_Post $post, String $lang): string
+    public function get_unique_post_slug(string $slug, \WP_Post $post, string $lang): string
     {
         global $wp_rewrite;
         $meta_key = "{$this->slug_field_name}_{$lang}";
@@ -624,11 +556,8 @@ class PostTypesController
 
     /**
      * Add rewrite rules for multilingual post types
-     *
-     * @param Array $rules
-     * @return Array
      */
-    public function rewrite_rules_array($rules)
+    public function rewrite_rules_array(array $rules): array
     {
         foreach ($this->get_multilingual_post_types('names', false) as $post_type) {
 
@@ -640,14 +569,9 @@ class PostTypesController
     }
 
     /**
-     * pre_get_posts
-     *
-     * modifies WP_Query to be language-aware
-     *
-     * @param \WP_Query $query
-     * @return void
+     * Modify WP_Query to be language-aware
      */
-    public function pre_get_posts(\WP_Query $query)
+    public function pre_get_posts(\WP_Query $query): void
     {
 
         // Skip if suppress_filters is set or query is for an attachment.
@@ -757,10 +681,6 @@ class PostTypesController
 
     /**
      * Guess the post type from a \WP_Query
-     *
-     * @param \WP_Query $query
-     * @return array
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
     private function guess_post_types(\WP_Query $query): array
     {
@@ -807,9 +727,6 @@ class PostTypesController
 
     /**
      * Detect and overwrite the query for get_page_by_path
-     *
-     * @param string $query
-     * @return void
      */
     public function query__get_page_by_path(string $query): string
     {
@@ -864,9 +781,6 @@ class PostTypesController
 
     /**
      * Convert an sql in_string to an array
-     *
-     * @param string $in_string     This expects a string like "'something', 'something_else'"
-     * @return array
      */
     private function in_string_to_array(string $in_string): array
     {
@@ -875,9 +789,6 @@ class PostTypesController
 
     /**
      * Get a WordPress Post default and translated urls.
-     *
-     * @param \WP_Post $post
-     * @return array
      */
     public function get_post_urls(\WP_Post $post): array
     {
@@ -894,13 +805,8 @@ class PostTypesController
 
     /**
      * Get translated permalink for a post
-     *
-     * @param \WP_Post $post
-     * @param string $language
-     * @param array $args
-     * @param string
      */
-    public function get_post_link(\WP_Post $post, String $language, array $args = []): string
+    public function get_post_link(\WP_Post $post, string $language, array $args = []): string
     {
 
         $args = $this->acfml->to_object(\wp_parse_args($args, [
@@ -998,20 +904,15 @@ class PostTypesController
     }
 
     /**
-     * Checks if a language of a post is active
-     *
-     * @param string $language
-     * @param \WP_Post $post
-     * @return boolean
-     * @author Rasso Hilber <mail@rassohilber.com>
+     * Check if a language of a post is active
      */
     private function is_post_lang_active(string $language, \WP_Post $post): bool
     {
-        // return true for default language
+        // return true for the default language
         if ($this->acfml->is_default_language($language)) {
             return true;
         }
-        // get value from DB
+        // get the value from the DB
         $is_active = \get_field("acfml_lang_active_$language", $post->ID);
         // return true if unset
         if (\in_array($is_active, [null, ""])) {
@@ -1022,10 +923,6 @@ class PostTypesController
 
     /**
      * Get the slug for a post
-     *
-     * @param \WP_Post $post
-     * @param string $language
-     * @return string|null
      */
     public function get_post_slug(\WP_Post $post, string $language): ?string
     {
@@ -1041,21 +938,14 @@ class PostTypesController
 
     /**
      * Check if a post is used as the front page
-     *
-     * @param Int $post_id
-     * @return bool
      */
-    private function post_is_front_page($post_id): bool
+    private function post_is_front_page(int $post_id): bool
     {
         return \get_option("show_on_front") === "page" && $post_id === \intval(\get_option('page_on_front'));
     }
 
     /**
      * Get the archive slug for a post type
-     *
-     * @param string $post_type
-     * @param string $language
-     * @return string|null
      */
     private function get_post_type_archive_slug(string $post_type, string $language): ?string
     {
@@ -1069,14 +959,9 @@ class PostTypesController
 
     /**
      * Get post type archive url for a language
-     *
-     * @param string $post_type_object
-     * @param string $language
-     * @return string|null
      */
     public function get_post_type_archive_link(string $post_type, string $language): ?string
     {
-
         $this->acfml->remove_link_filters();
         $link = \get_post_type_archive_link($post_type);
         $this->acfml->add_link_filters();
@@ -1098,11 +983,8 @@ class PostTypesController
 
     /**
      * Multilingual find_post_by_old_slug
-     *
-     * @param string $query
-     * @return string
      */
-    public function query__find_post_by_old_slug($query)
+    public function query__find_post_by_old_slug(string $query): string
     {
         $language = $this->acfml->get_current_language();
         if ($this->acfml->is_default_language($language)) {
@@ -1154,10 +1036,8 @@ class PostTypesController
 
     /**
      * Re-injects the query var 'name', if a 404 was detected.
-     *
-     * @return void
      */
-    public function prepare_old_slug_redirect()
+    public function prepare_old_slug_redirect(): void
     {
         global $wp_query;
         if ($this->acfml->current_language_is_default()) {
@@ -1171,10 +1051,8 @@ class PostTypesController
 
     /**
      * Maybe re-save posts
-     *
-     * @return void
      */
-    public function maybe_resave_posts()
+    public function maybe_resave_posts(): void
     {
 
         $resaved_posts_count = $this->resave_all_posts();
@@ -1223,12 +1101,8 @@ class PostTypesController
 
     /**
      * Applies 'urldecode' to loaded ACFML slugs
-     *
-     * @param mixed $value
-     * @return mixed
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
-    public function load_value_acfml_slug($value)
+    public function load_value_acfml_slug(mixed $value): mixed
     {
         if (empty($value)) {
             return $value;

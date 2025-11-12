@@ -4,18 +4,23 @@ namespace Hirasso\ACFML;
 
 if (! \defined('ABSPATH')) {
     exit;
-} // Exit if accessed directly
+}
 
 class FieldsController
 {
-    // for which field types should 'acfml_multilingual' be available?
-    private $multilingual_field_types = [
+    /**
+     * For which field types should 'acfml_multilingual' be available?
+     *
+     * @var array<int, string>
+     */
+    private array $multilingual_field_types = [
         'text', 'textarea', 'url', 'image', 'file', 'wysiwyg', 'post_object', 'true_false'
     ];
 
-    private $available_ui_styles = ['tabs', 'columns'];
+    /** @var array<int, string> */
+    private array $available_ui_styles = ['tabs', 'columns'];
 
-    private $prefix;
+    private string $prefix;
 
     /**
      * Constructor
@@ -31,10 +36,8 @@ class FieldsController
 
     /**
      * Add hooks to ACF
-     *
-     * @return void
      */
-    private function add_hooks()
+    private function add_hooks(): void
     {
         // allow custom field types to be multilingual
         $multilingual_field_types = \apply_filters("$this->prefix/multilingual_field_types", $this->multilingual_field_types);
@@ -55,13 +58,10 @@ class FieldsController
 
     /**
      * Render field settings for multilingual fields
-     *
-     * @param Array $field
-     * @return void
+     * @param array<string, mixed> $field
      */
-    public function render_field_settings($field)
+    public function render_field_settings(array $field): void
     {
-
         \acf_render_field_setting($field, [
             'label'         => \__('Multilingual?', 'acfml'),
             'instructions'	=> '',
@@ -80,17 +80,13 @@ class FieldsController
      *    – if the field is set to 'required', set the sub-field for the default language to required,
      *      but not the group itself
      *
-     * @param Array $field
-     * @return void
+     * @param array<string, mixed> $field
+     * @return array<string, mixed>
      */
-    public function load_multilingual_field($field)
+    public function load_multilingual_field(array $field): array
     {
-        global $post, $post_type;
+        global $post_type;
 
-        // return of no $field
-        if (!\is_array($field)) {
-            return $field;
-        }
         // return of on acf-field-group edit screen
         $post_type = $_GET['post_type'] ?? \get_post_type();
         if ($post_type === 'acf-field-group') {
@@ -196,13 +192,8 @@ class FieldsController
     /**
      * Automatically loads possible value of previously monolingual field
      * to the sub_field assigned to the default language
-     *
-     * @param Mixed $value
-     * @param Int $post_id
-     * @param Array $field
-     * @return Mixed
      */
-    public function inject_previous_monolingual_value($value, $post_id, $field)
+    public function inject_previous_monolingual_value(mixed $value, int|string $post_id, array $field): mixed
     {
         // bail early if field is empty or not multilingual
         if (!$this->is_acfml_group($field)) {
@@ -231,16 +222,8 @@ class FieldsController
      *
      * The arguments match that of add_filter(), but this function will also register a second
      * callback designed to remove the first immediately after it runs.
-     *
-     * @param string   $hook     The filter name.
-     * @param callable $callback The callback function.
-     * @param int      $priority Optional. The priority at which the callback should be executed.
-     *                           Default is 10.
-     * @param int      $args     Optional. The number of arguments expected by the callback function.
-     *                           Default is 1.
-     * @return bool Like add_filter(), this function always returns true.
      */
-    public function add_filter_once($hook, $callback, $priority = 10, $args = 1)
+    public function add_filter_once(string $hook, callable $callback, int $priority = 10, int $args = 1): bool
     {
         $singular = function () use ($hook, $callback, $priority, $args, &$singular) {
             \remove_filter($hook, $singular, $priority);
@@ -252,13 +235,8 @@ class FieldsController
 
     /**
      * Formats a fields value
-     *
-     * @param Mixed $value
-     * @param Int $post_id
-     * @param Array $field
-     * @return Mixed formatted value
      */
-    public function format_multilingual_value($value, $post_id, $field)
+    public function format_multilingual_value(mixed $value, int|string $post_id, array $field): mixed
     {
         if (!$this->is_acfml_group($field)) {
             return $value;
@@ -272,13 +250,8 @@ class FieldsController
     /**
      * Applies custom "acfml_sanitize_callback" to field values before saving to the database.
      * Used for slugs
-     *
-     * @param mixed $value
-     * @param int $post_id
-     * @param array $field
-     * @return mixed
      */
-    public function before_update_multilingual_value($value, $post_id, $field, $value_before)
+    public function before_update_multilingual_value(mixed $value, int|string $post_id, array $field, mixed $value_before): mixed
     {
         if (!$this->is_acfml_group($field)) {
             return $value;
@@ -291,19 +264,14 @@ class FieldsController
 
     /**
      * Write the default language's $value to the group $value itself
-     *
-     * @param mixed $value
-     * @param int $post_id
-     * @param array $field
-     * @return mixed
      */
-    public function after_update_multilingual_value($value, $post_id, $field, $value_before)
+    public function after_update_multilingual_value(mixed $value, int|string $post_id, array $field, mixed $value_before): mixed
     {
         if (!$this->is_acfml_group($field)) {
             return $value;
         }
         $default_language = $this->acfml->get_default_language();
-        $value = \get_post_meta($post_id, "{$field['name']}_$default_language", true);
+        $value = \get_field($post_id, "{$field['name']}_$default_language", false);
         return $value;
     }
 
@@ -327,10 +295,6 @@ class FieldsController
 
     /**
      * Checks an UI style for available styles
-     *
-     * @param string $ui_style
-     * @return void
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
     private function validate_ui_style(string $ui_style): bool
     {
@@ -339,11 +303,6 @@ class FieldsController
 
     /**
      * Convert an array to a readable string
-     *
-     * @param array $array
-     * @param bool $quote_items
-     * @return string
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
     private function make_array_readable(array $array, bool $quote_items = true): string
     {
@@ -364,11 +323,8 @@ class FieldsController
 
     /**
      * Renders Language Tabs for multilingual fields
-     *
-     * @param Array $field
-     * @return void
      */
-    public function render_multilingual_field($field): void
+    public function render_multilingual_field(array $field): void
     {
         if (!$this->is_acfml_group($field)) {
             return;
@@ -389,11 +345,6 @@ class FieldsController
 
     /**
      * Renders language tabs for a field
-     *
-     * @param array $languages
-     * @param string $default_field_language
-     * @return void
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
     private function render_language_tabs(array $languages, string $default_field_language): void
     {
@@ -412,9 +363,6 @@ class FieldsController
 
     /**
      * Get the default language for an ACF field in the admin
-     *
-     * @param Array $field
-     * @return string
      */
     private function get_active_language_tab(array $field): string
     {
@@ -424,23 +372,16 @@ class FieldsController
 
     /**
      * Check if a field is multilingual
-     *
-     * @param Array|Boolean $field
-     * @return Boolean
      */
-    private function is_acfml_group($field)
+    private function is_acfml_group(array|bool $field): bool
     {
         return \is_array($field) && $field['type'] === 'group' && !empty($field['acfml_multilingual']);
     }
 
     /**
      * Filter field wrapper
-     *
-     * @param Array $wrapper
-     * @param Array $field
-     * @return Array
      */
-    public function field_wrapper_attributes($wrapper, $field)
+    public function field_wrapper_attributes(array $wrapper, array $field): array
     {
         if ($switch_with = $field['acfml_ui_listen_to'] ?? null) {
             $wrapper['data-acfml-ui-listen-to'] = $switch_with;
@@ -457,12 +398,8 @@ class FieldsController
 
     /**
      * Sets delayed initialization to true for hidden acfml wysiwyg fields
-     *
-     * @param mixed $field
-     * @return mixed
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
-    public function maybe_delay_wysiwyg($field)
+    public function maybe_delay_wysiwyg(mixed $field): mixed
     {
         if (empty($field)) {
             return $field;

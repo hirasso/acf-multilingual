@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Class SavePostTest
- *
- * @package ACFMultilingual
- */
-
 use Hirasso\ACFML\ACFMultilingual;
 use Hirasso\ACFML\Config;
 

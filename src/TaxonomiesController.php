@@ -4,36 +4,28 @@ namespace Hirasso\ACFML;
 
 if (! \defined('ABSPATH')) {
     exit;
-} // Exit if accessed directly
+}
 
 class TaxonomiesController
 {
-    private $prefix;
-    private $default_language;
-    private $field_postfix = "term_name";
-    private $field_name;
-    private $field_key;
-    private $field_group_key;
-    private $taxonomies = [];
-
-    private $acfml = null;
+    private string $prefix;
+    private ?string $default_language = null;
+    private string $field_postfix = "term_name";
+    private string $field_name;
+    private string $field_key;
+    private string $field_group_key;
+    /** @var array<int, string> */
+    private array $taxonomies = [];
 
     /**
      * Constructor
-     *
-     * @param ACFMultilingual|null $acfml
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
-    public function __construct(ACFMultilingual $acfml)
+    public function __construct(private ACFMultilingual $acfml)
     {
-
-        // inject main class
-        $this->acfml = $acfml;
-
         \add_action('acf/init', [$this, 'init']);
     }
 
-    public function init()
+    public function init(): void
     {
         // variables
         $this->prefix = $this->acfml->get_prefix();
@@ -49,21 +41,19 @@ class TaxonomiesController
         \add_filter('wp_update_term_data', [$this, 'update_term_data'], 10, 4);
         // wp_update_term()
         \add_filter('get_term', [$this, 'get_term'], 10, 2);
-        \add_action("acf/load_value/key={$this->field_key}_{$this->default_language}", [$this, "load_default_value"], 10, 3);
+        \add_filter("acf/load_value/key={$this->field_key}_{$this->default_language}", [$this, "load_default_value"], 10, 3);
 
         // methods
         \add_action('init', [$this, 'add_title_field_group'], 12);
 
         // query filters
-        \add_filter('pre_get_terms', [$this, 'pre_get_terms'], 999);
+        \add_action('pre_get_terms', [$this, 'pre_get_terms'], 999);
     }
 
     /**
      * Adds a custom field group for the title
-     *
-     * @return void
      */
-    public function add_title_field_group()
+    public function add_title_field_group(): void
     {
 
         $taxonomies = $this->get_multilingual_taxonomies();
@@ -112,22 +102,16 @@ class TaxonomiesController
 
     /**
      * Get multilingual taxonomies
-     *
-     * @return Array
      */
-    public function get_multilingual_taxonomies()
+    public function get_multilingual_taxonomies(): array
     {
         return $this->taxonomies;
     }
 
     /**
      * Adds taxonomies
-     *
-     * @param object|null $taxonomies
-     * @return void
-     * @author Rasso Hilber <mail@rassohilber.com>
      */
-    public function add_taxonomies(object $taxonomies)
+    public function add_taxonomies(object $taxonomies): void
     {
         foreach ($taxonomies as $taxonomy_name => $args) {
             $this->add_taxonomy($taxonomy_name);
@@ -136,27 +120,19 @@ class TaxonomiesController
 
     /**
      * Add a taxonomy
-     *
-     * @param string $taxonomy
-     * @return array
      */
-    public function add_taxonomy($taxonomy): array
+    public function add_taxonomy(string $taxonomy_name): array
     {
-        $taxonomies = \array_unique(\array_merge($this->taxonomies, [$taxonomy]));
-        $taxonomies = \array_filter($taxonomies, function ($tax) {
-            return \taxonomy_exists($tax);
-        });
+        $taxonomies = \array_unique(\array_merge($this->taxonomies, [$taxonomy_name]));
+        $taxonomies = \array_filter($taxonomies, fn ($tax) => \taxonomy_exists($tax));
         $this->taxonomies = $taxonomies;
         return $taxonomies;
     }
 
     /**
      * Filter Admin Body Class
-     *
-     * @param string $class
-     * @param string
      */
-    public function admin_body_class($class)
+    public function admin_body_class(string $class): string
     {
         global $pagenow, $taxonomy;
         if (!\in_array($pagenow, ['term.php', 'edit-tags.php'])) {
@@ -170,12 +146,8 @@ class TaxonomiesController
 
     /**
      * Parse Custom Field value for term name
-     *
-     * @param [type] $term
-     * @param [type] $taxonomy
-     * @return void
      */
-    public function pre_insert_term($term, $taxonomy)
+    public function pre_insert_term(mixed $term, mixed $taxonomy): mixed
     {
         $default_language_name = $_POST["acf"][$this->field_key]["{$this->field_key}_{$this->default_language}"] ?? null;
         if ($default_language_name) {
@@ -185,15 +157,9 @@ class TaxonomiesController
     }
 
     /**
-     * Undocumented function
-     *
-     * @param [type] $data
-     * @param [type] $term_id
-     * @param [type] $taxonomy
-     * @param [type] $args
-     * @return void
+     * Update term data
      */
-    public function update_term_data($data, $term_id, $taxonomy, $args)
+    public function update_term_data(mixed $data, mixed $term_id, mixed $taxonomy, mixed $args): mixed
     {
         $default_language_name = $_POST["acf"][$this->field_key]["{$this->field_key}_{$this->default_language}"] ?? null;
         if ($default_language_name) {
@@ -204,12 +170,8 @@ class TaxonomiesController
 
     /**
      * Filter terms
-     *
-     * @param WP_Term $term
-     * @param string $taxonomy
-     * @return WP_Term
      */
-    public function get_term($term, $taxonomy)
+    public function get_term(\WP_Term $term, string $taxonomy): \WP_Term
     {
         global $pagenow;
         if ($pagenow === 'term.php') {
@@ -224,13 +186,8 @@ class TaxonomiesController
 
     /**
      * Load Default Value
-     *
-     * @param Mixed $value
-     * @param Int $post_id
-     * @param Array $field
-     * @return Mixed
      */
-    public function load_default_value($value, $post_id, $field)
+    public function load_default_value(mixed $value, int|string $post_id, array $field): mixed
     {
         global $pagenow, $taxonomy;
         if ($value) {
@@ -250,12 +207,8 @@ class TaxonomiesController
 
     /**
      * Filter WP_Term_Query
-     *
-     * @param \WP_Term_Query $query
-     * @return void
-     *
      */
-    public function pre_get_terms($query)
+    public function pre_get_terms(\WP_Term_Query $query): void
     {
         if ($this->acfml->current_language_is_default()) {
             return;

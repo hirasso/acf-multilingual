@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Class SavePostTest
- *
- * @package ACFMultilingual
- */
-
 use Hirasso\ACFML\ACFMultilingual;
 use Hirasso\ACFML\Config;
 
@@ -16,10 +10,8 @@ class SavePostTest extends WP_UnitTestCase
 {
     /**
     * ACFML instance
-    *
-    * @var ACFMultilingual
     */
-    private $acfml;
+    private ACFMultilingual $acfml;
 
     public function setUp()
     {

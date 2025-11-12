@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Class ConvertAndResolveUrlsTest
- *
- * @package ACFMultilingual
- */
-
 use Hirasso\ACFML\ACFMultilingual;
 use Hirasso\ACFML\Config;
 
@@ -13,10 +7,8 @@ class ConvertAndResolveUrlsTest extends WP_UnitTestCase
 {
     /**
     * ACFML instance
-    *
-    * @var ACFMultilingual
     */
-    private $acfml;
+    private ACFMultilingual $acfml;
 
     public function setUp()
     {
