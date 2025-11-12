@@ -45,4 +45,4 @@ function _manually_load_plugins()
 \tests_add_filter('muplugins_loaded', '_manually_load_plugins');
 
 // Start up the WP testing environment.
-require \getenv('WP_PHPUNIT__DIR') . '/includes/bootstrap.php';
+require_once \getenv('WP_PHPUNIT__DIR') . '/includes/bootstrap.php';

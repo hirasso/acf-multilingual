@@ -6,16 +6,18 @@
     "./vendor/_wp-plugins/advanced-custom-fields",
     "./vendor/_wp-plugins/classic-editor"
   ],
-  "themes": ["./vendor/_wp-themes/twentytwentyfive"],
+
   "phpVersion": "8.2",
   "port": 9783,
   "env": {
+    "development": {
+      "themes": ["./vendor/_wp-themes/twentytwentyfive"]
+    },
     "tests": {
       "port": 9784
     }
   },
   "lifecycleScripts": {
     "afterStart": "./tools/wp-env-after-start.sh"
-  },
-  "config": {}
+  }
 }
