@@ -1,22 +1,19 @@
 <?php
 
 /**
- * PHPUnit bootstrap file
+ * wp-phpunit bootstrap file
+ *
+ * @see https://github.com/wp-phpunit/example-plugin/blob/master/tests/bootstrap.php
  */
 
-$_tests_dir = \getenv('WP_TESTS_DIR');
+// Load wp-env's config file in the container, but still use our own wp-phpunit
+\putenv('WP_PHPUNIT__TESTS_CONFIG=/wordpress-phpunit/wp-tests-config.php');
 
-if (! $_tests_dir) {
-    $_tests_dir = \rtrim(\sys_get_temp_dir(), '/\\') . '/wordpress-tests-lib';
-}
-
-if (! \file_exists($_tests_dir . '/includes/functions.php')) {
-    echo "Could not find $_tests_dir/includes/functions.php, have you run bin/install-wp-tests.sh ?" . PHP_EOL; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-    exit(1);
-}
+// Composer autoloader must be loaded before WP_PHPUNIT__DIR will be available
+require_once \dirname(__DIR__) . '/vendor/autoload.php';
 
 // Give access to tests_add_filter() function.
-require_once $_tests_dir . '/includes/functions.php';
+require_once \getenv('WP_PHPUNIT__DIR') . '/includes/functions.php';
 
 /**
  * Delete the languages directory
@@ -47,17 +44,5 @@ function _manually_load_plugins()
 }
 \tests_add_filter('muplugins_loaded', '_manually_load_plugins');
 
-function var_dump_exit($thing)
-{
-    \var_dump($thing);
-    exit;
-}
-
-function var_export_exit($thing)
-{
-    \var_export($thing);
-    exit;
-}
-
 // Start up the WP testing environment.
-require $_tests_dir . '/includes/bootstrap.php';
+require \getenv('WP_PHPUNIT__DIR') . '/includes/bootstrap.php';

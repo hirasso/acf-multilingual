@@ -14,8 +14,8 @@
       "port": 9784
     }
   },
-  "mappings": {},
   "lifecycleScripts": {
     "afterStart": "./tools/wp-env-after-start.sh"
-  }
+  },
+  "config": {}
 }
