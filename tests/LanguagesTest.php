@@ -34,22 +34,22 @@ class AddGetLanguagesTest extends WP_UnitTestCase
         unset($GLOBALS['current_screen']);
     }
 
-    // public function test_add_text_direction()
-    // {
-    //     $this->config->languages = (object) [
-    //         'en' => (object) [
-    //             'locale' => 'en_US',
-    //             'name' => 'English'
-    //         ],
-    //         'ar' => (object) [
-    //             'locale' => 'ar',
-    //             'name' => 'Arabic'
-    //         ]
-    //     ];
-    //     $acfml = new ACFMultilingual($this->config);
-    //     $acfml->initialize();
-    //     $this->assertSame('rtl', $acfml->get_text_direction('ar'));
-    // }
+    public function test_add_text_direction()
+    {
+        $this->config->languages = (object) [
+            'en' => (object) [
+                'locale' => 'en_US',
+                'name' => 'English'
+            ],
+            'ar' => (object) [
+                'locale' => 'ar',
+                'name' => 'Arabic'
+            ]
+        ];
+        $acfml = new ACFMultilingual($this->config);
+        $acfml->initialize();
+        $this->assertSame('rtl', $acfml->get_text_direction('ar'));
+    }
 
     public function test_add_language()
     {
