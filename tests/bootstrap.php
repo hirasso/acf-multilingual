@@ -1,6 +1,6 @@
 <?php
 
-namespace Hirasso\ACFMultilingual\Tests;
+namespace Hirasso\ACFML\Tests;
 
 /**
  * wp-phpunit bootstrap file
