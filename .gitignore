@@ -3,7 +3,10 @@ npm-debug.log
 node_modules
 .cache
 *.map
-vendor
 .vscode
 acfml.config.json
 .phpunit.result.cache
+
+# dependencies
+wp
+vendor

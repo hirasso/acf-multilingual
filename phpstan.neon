@@ -10,5 +10,6 @@ parameters:
         - autoload.dist.php
         - tests
     scanDirectories:
+        - wp
         - vendor
     ignoreErrors:

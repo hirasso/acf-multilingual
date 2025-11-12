@@ -1,5 +1,7 @@
 <?php
 
+namespace Hirasso\ACFMultilingual\Tests;
+
 /**
  * wp-phpunit bootstrap file
  *
@@ -15,15 +17,18 @@ require_once \dirname(__DIR__) . '/vendor/autoload.php';
 // Give access to tests_add_filter() function.
 require_once \getenv('WP_PHPUNIT__DIR') . '/includes/functions.php';
 
-/**
- * Delete the languages directory
- */
-function _cleanup_languages_dir()
+// Clean up the languages dir before running tests, so we can test downloading them
+function clear_languages_directory()
 {
-    echo "\nCleaning up languages directory...\n\n";
     require_once ABSPATH . 'wp-admin/includes/file.php';
+
+    echo "\nCleaning up languages directory...\n\n";
+
+    /** @var \WP_Filesystem $wp_filesystem */
     global $wp_filesystem;
+
     \WP_Filesystem();
+
     // @phpstan-ignore constant.notFound
     $wp_filesystem->delete(WP_LANG_DIR, true);
 }
@@ -31,18 +36,15 @@ function _cleanup_languages_dir()
 /**
  * Manually load the plugin being tested.
  */
-function _manually_load_plugins()
-{
-    // Clean up the languages dir before running tests, so we can test downloading them
-    \_cleanup_languages_dir();
+\tests_add_filter('muplugins_loaded', function () {
+    clear_languages_directory();
     // require ACF, which is a dependency of ACFML
     require_once(\dirname(\dirname(\dirname(__FILE__))) . '/advanced-custom-fields/acf.php');
     // require the main plugin file
     require_once(\dirname(\dirname(__FILE__)) . '/acf-multilingual.php');
     // don't autamatically load acfml in tests
     \remove_action('plugins_loaded', 'acfml');
-}
-\tests_add_filter('muplugins_loaded', '_manually_load_plugins');
+});
 
 // Start up the WP testing environment.
 require_once \getenv('WP_PHPUNIT__DIR') . '/includes/bootstrap.php';

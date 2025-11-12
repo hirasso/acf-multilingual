@@ -45,12 +45,12 @@
     }
   },
   "extra": {
-    "wordpress-install-dir": "vendor/_wp",
+    "wordpress-install-dir": "wp",
     "installer-paths": {
-      "vendor/_wp-plugins/{$name}/": [
+      "wp/wp-content/plugins/{$name}/": [
         "type:wordpress-plugin"
       ],
-      "vendor/_wp-themes/{$name}/": [
+      "wp/wp-content/themes/{$name}/": [
         "type:wordpress-theme"
       ]
     }
