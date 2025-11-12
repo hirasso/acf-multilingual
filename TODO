@@ -1,6 +1,8 @@
-19.10.2021:
-  ❍ Optimize Tabs UI in Attachment Popups
-  
+wp-env:
+  ❍ fix theme in non-test wp-env
+  ❍ fix test: test_add_text_direction
+  ❍ fix risky tests
+
 
 Taxonomies:
   ❍ Multilingual Slugs for categories/post_tags/custom taxonomies

@@ -29,7 +29,7 @@ class HomeUrlTest extends WP_UnitTestCase
         $acfml = new ACFMultilingual($this->config);
         $acfml->initialize();
 
-        $expected = 'http://example.org/test-path/';
+        $expected = home_url('/test-path/');
         $result  = $acfml->home_url('/test-path/');
 
         $this->assertSame($expected, $result);
@@ -47,7 +47,7 @@ class HomeUrlTest extends WP_UnitTestCase
         $acfml = new ACFMultilingual($this->config);
         $acfml->initialize();
 
-        $expected = 'http://example.org/test-path/';
+        $expected = home_url('/test-path/');
         $result  = $acfml->home_url('/test-path/', 'en');
 
         $this->assertSame($expected, $result);
@@ -69,7 +69,7 @@ class HomeUrlTest extends WP_UnitTestCase
         $acfml = new ACFMultilingual($this->config);
         $acfml->initialize();
 
-        $expected = 'http://example.org/de/test-path/';
+        $expected = home_url('/de/test-path/');
         $result  = $acfml->home_url('/test-path/', 'de');
 
         $this->assertSame($expected, $result);

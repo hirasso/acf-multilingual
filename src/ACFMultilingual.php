@@ -211,6 +211,7 @@ class ACFMultilingual
     public function download_language_packs(): array
     {
         $packs = [];
+
         /** WordPress Translation Installation API */
         require_once ABSPATH . 'wp-admin/includes/file.php';
         require_once ABSPATH . 'wp-admin/includes/translation-install.php';
@@ -222,6 +223,8 @@ class ACFMultilingual
          * After downloading new language packs, WP_Locale_Switcher needs
          * to be re-initialized, so that it can correctly store the
          * new result of get_available_languages()
+         *
+         * @var \WP_Locale_Switcher $wp_locale_switcher
          */
         global $wp_locale_switcher;
         $wp_locale_switcher = new \WP_Locale_Switcher();
@@ -434,6 +437,7 @@ class ACFMultilingual
         $direction = 'ltr';
 
         $switched = \switch_to_locale($locale);
+
         if (\is_rtl()) {
             $direction = 'rtl';
         }

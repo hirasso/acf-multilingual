@@ -42,8 +42,8 @@ class ConvertAndResolveUrlsTest extends WP_UnitTestCase
 
     public function test_simple_convert_url()
     {
-        $expected = 'http://example.org/de/test-path/';
-        $result  = $this->acfml->simple_convert_url('http://example.org/test-path/', 'de');
+        $expected = home_url('/de/test-path/');
+        $result  = $this->acfml->simple_convert_url(home_url('/test-path/'), 'de');
 
         $this->assertSame($result, $expected);
     }
