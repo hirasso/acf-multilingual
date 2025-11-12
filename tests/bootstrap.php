@@ -24,9 +24,7 @@ function clear_languages_directory()
 
     echo "\nCleaning up languages directory...\n\n";
 
-    /** @var \WP_Filesystem $wp_filesystem */
     global $wp_filesystem;
-
     \WP_Filesystem();
 
     // @phpstan-ignore constant.notFound
