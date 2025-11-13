@@ -49,6 +49,7 @@
     "@types/jquery": "^3.5.33",
     "@wordpress/env": "^10.34.0",
     "fast-glob": "^3.3.3",
+    "lint-staged": "^16.2.6",
     "picocolors": "^1.1.1",
     "prettier": "^3.6.2",
     "wp-pot": "^1.10.2"
