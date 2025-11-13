@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches:
+      main
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  php-tests:
+    name: PHP ${{ matrix.php }} Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.2, 8.3]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Shared Setup
+        uses: ./.github/actions/shared-setup
+        with:
+          php-version: ${{ matrix.php }}
+
+      - name: Setup and Start wp-env
+        uses: godaddy-wordpress/setup-wp-env@v1
+        with:
+          phpVersion: ${{ matrix.php }}
+
+      - name: Analyse Code
+        run: pnpm run analyse
+
+      - name: Run Pest Tests
+        run: pnpm run test:pest:ci
+
+  # e2e-tests:
+  #   name: E2E Tests
+  #   runs-on: ubuntu-latest
+
+  #   strategy:
+  #     fail-fast: true
+
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  #     - name: Run Shared Setup
+  #       uses: ./.github/actions/shared-setup
+  #       with:
+  #         php-version: ${{ matrix.php }}
+  #         playwright: true
+
+  #     - name: Create Release Files
+  #       run: |
+  #         config/cli/cli.js release:create
+
+  #     - name: Setup and Start wp-env
+  #       uses: godaddy-wordpress/setup-wp-env@v1
+  #       with:
+  #         phpVersion: 8.3
+  #         plugins: '["./scoped/wp-thumbhash/", "./tests/E2E/e2e-plugin.php"]'
+
+  #     - name: Run Playwright Tests Against the Scoped Release
+  #       run: |
+  #         pnpm run test:e2e
+
+  #     - uses: daun/playwright-report-summary@v3
+  #       if: always()
+  #       with:
+  #         report-file: playwright-results.json
+
