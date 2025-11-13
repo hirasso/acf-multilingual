@@ -271,8 +271,11 @@ class FieldsController
             return $value;
         }
         $default_language = $this->acfml->get_default_language();
-        $value = \get_field($post_id, "{$field['name']}_$default_language", false);
-        return $value;
+        $field_key = "{$field['key']}_$default_language";
+
+        $default_language_value = $value_before[$field_key] ?? $value;
+
+        return $default_language_value;
     }
 
     /**
