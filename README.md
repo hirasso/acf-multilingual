@@ -90,9 +90,17 @@ This config will make:
 
 To get an idea about what the plugin can do, it's probably quickest to have a look at [the API](https://github.com/hirasso/acf-multilingual/blob/main/api.php).
 
-## Make built-in ACF fields multilingual
+## Make ACF fields multilingual
 
-Optionally set ACF fields to be `multilingual`, so that they can be translated for every language. like e.g. `Text`, `Textarea`, `WYSIWYG`, ... (for the full list see `$multilingual_field_types` in the class `FieldsController`). If you use `vinkla/extended-acf`, you can make fields multilingual like so:
+Set ACF fields to be `multilingual`, so that they can be translated for every language. like e.g. `Text`, `Textarea`, `WYSIWYG`, ... (for the full list see `$multilingual_field_types` in the class `FieldsController`):
+
+![CleanShot 2025-11-13 at 09 36 58@2x](https://github.com/user-attachments/assets/39654f89-693e-4cf9-9e05-8590f6c33a27)
+
+Now the field can be translated!
+
+![CleanShot 2025-11-13 at 09 38 21@2x](https://github.com/user-attachments/assets/ab3ac4e8-3581-4d7b-8e05-4bd70b585517)
+
+If you use `vinkla/extended-acf`, you can make fields multilingual like so:
 
 ```php
 \Extended\ACF\Fields\Text::make('Text')
@@ -100,9 +108,3 @@ Optionally set ACF fields to be `multilingual`, so that they can be translated f
 ```
 
 If a field is not marked multilingual, it will display the same value in both languages.
-
-# Todo
-
-- Make Tests work again
-- Multilingual slugs for taxonomy terms
-- A more complete readme ;)
