@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.2.0
+
+### Minor Changes
+
+- 1a93029: Introduce static analysis and integration tests
+- 09075b7: Run tests in CI
+
 ## 3.1.0
 
 ### Minor Changes
