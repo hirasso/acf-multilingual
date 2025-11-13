@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.2.1
+
+### Patch Changes
+
+- 214ffca: Fix: make preserving the default language value for multilingual fields more robust
+
 ## 3.2.0
 
 ### Minor Changes
