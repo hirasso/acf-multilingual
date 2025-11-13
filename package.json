@@ -13,7 +13,7 @@
     "format:assets": "pnpx prettier --write 'resources/*.{js,css}'",
     "format:php": "./vendor/bin/pint",
     "analyse": "pnpm run analyse:js && pnpm run analyse:php",
-    "analyse:js": "pnpm exec tsc --noEmit --project ./jsconfig.json",
+    "analyse:js": "pnpx tsc --noEmit --project ./jsconfig.json",
     "analyse:php": "vendor/bin/phpstan analyze --memory-limit=1G",
     "version": "pnpm changeset version && bin/cli.js version:patch",
     "install-wp-tests": "echo https://make.wordpress.org/cli/handbook/misc/plugin-unit-tests/#3-initialize-the-testing-environment-locally",
