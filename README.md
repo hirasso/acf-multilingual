@@ -1,23 +1,17 @@
-#### Disclaimer
-
-> [!WARNING]
-> This project is open source, which does not mean it includes free support. It is aimed primarily at professional WordPress developers that aren't happy with the currently available multilingual solutions and want to explore a new option
-
 # ACF Multilingual
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/hirasso/acf-multilingual.svg)](https://packagist.org/packages/hirasso/acf-multilingual)
+[![Test Status](https://img.shields.io/github/actions/workflow/status/hirasso/acf-multilingual/ci.yml?label=tests)](https://github.com/hirasso/acf-multilingual/actions/workflows/ci.yml)
+
 An experimental plugin for building multilingual websites using [WordPress](https://github.com/WordPress/WordPress) and [Advanced Custom Fields](https://github.com/AdvancedCustomFields/acf) 🌀
-
-## Project status
-
-This is an experimental plugin. There is no real documentation yet, you will have to look at the source code to find out how it works.
-
-## Why did I make this public?
-
-I made this public in the hopes to make it more sustainable and fail-proof. You will probably not want to use this plugin in big corporate projects, just yet (or ever). Use it for a personal website or the likes and report bugs and problems.
 
 ## Limitations
 
 Does NOT integrate with plugins that add additional fields to the WordPress Admin, like e.g. Yoast SEO. Works best with fully customized pure WordPress/ACF setups.
+
+## Why did I make this public?
+
+I made this public in the hopes to make it more sustainable and fail-proof. You will probably not want to use this plugin in big corporate projects, just yet (or ever). Use it for a personal website or the likes and report bugs and problems.
 
 # Usage
 
