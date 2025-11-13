@@ -5,4 +5,4 @@ if [ -n "$CI" ]; then
   exit 0
 fi
 
-pnpx lint-staged -- --no-stash
+pnpm exec lint-staged -- --no-stash
