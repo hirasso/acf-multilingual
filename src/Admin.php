@@ -150,7 +150,7 @@ class Admin
         // add success notice
         $this->add_notice(
             'flush-rewrite-rules',
-            \__(' Rewrite Rules successfully flushed', 'acfml'),
+            \__('Rewrite Rules successfully flushed', 'acfml'),
             [
                 'type' => 'success',
                 'is_dismissible' => true

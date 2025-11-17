@@ -3,9 +3,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ACF Multilingual\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/acf-"
-"multilingual\n"
-"POT-Creation-Date: 2025-11-17T08:46:36+00:00\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/acf-multilingual\n"
+"POT-Creation-Date: 2025-11-17T09:07:03+00:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -47,76 +46,91 @@ msgid "https://rassohilber.com"
 msgstr ""
 
 #: src/Admin.php:153
-msgid "[ACFML] Rewrite Rules successfully flushed"
-msgstr "[ACFML] Die Rewrite Rules wurden erfolgreich erneuert"
+msgid " Rewrite Rules successfully flushed"
+msgstr "Die Rewrite-Rules wurden erfolgreich erneuert"
 
 #: src/Admin.php:183
 msgid "Switch your admin language"
 msgstr "Admin-Sprache wechseln"
 
-#: src/Admin.php:198
+#. translators: 1: Language Name
+#: src/Admin.php:201
 msgid "Switch to %s"
 msgstr "Zu %s wechseln"
 
-#: src/Admin.php:257
+#. translators: 1: Link to the Advanced Custom Fields plugin
+#: src/Admin.php:263
 msgid "ACF Multilingual requires the plugin %s to be installed and activated."
 msgstr "ACF Multilingual benötigt das Plugin %s."
 
-#: src/Admin.php:275
+#. translators: 1: Link to the permalink settings
+#: src/Admin.php:282
+#, fuzzy
+#| msgid ""
+#| "[ACFML] Pretty permalinks need to be activated. Please go to your %s and "
+#| "select e.g. 'Post name'."
 msgid ""
-"[ACFML] Pretty permalinks need to be activated. Please go to your %s and "
-"select e.g. 'Post name'."
+"Pretty permalinks need to be activated. Please go to your %s and select e.g. "
+"'Post name'."
 msgstr ""
 "[ACFML] 'Pretty Permalinks' sind nicht aktiviert. Bitte gehe zu den %s und "
 "wähle beispielsweise 'Beitragsname'."
 
-#: src/Admin.php:279
+#: src/Admin.php:286
 msgid "permalink settings"
 msgstr "Permalink Einstellungen"
 
-#: src/Admin.php:294
+#. translators: 1: Sample Config File Name, 2: Config File Name
+#: src/Admin.php:302
 msgid ""
-"[ACFML] No config file found. Please copy the file "
-"<code>acfml.config.sample.json</code> from the plugin root to your theme "
-"root, rename it to <code>acfml.config.json</code> and adjust your settings "
-"inside."
+"No config file found. Please copy the file %1$s from the plugin root to your "
+"theme root, rename it to %3$s and adjust your settings inside."
 msgstr ""
 
 #: src/FieldsController.php:66
 msgid "Multilingual?"
 msgstr "Mehrsprachig?"
 
-#: src/FieldsController.php:290
-msgid "[ACFML] Unknown field UI style '%s'. Please use %s."
+#. translators: 1: Unkown UI style name, 2: Comma-separated list of available UI styles
+#: src/FieldsController.php:291
+#, fuzzy
+#| msgid "[ACFML] Unknown field UI style '%s'. Please use %s."
+msgid "Unknown field UI style \"%1$s\". Please use %2$s."
 msgstr "[ACFML] Unbekannter field UI style '%s'. Please use %s."
 
-#: src/FieldsController.php:356
+#: src/FieldsController.php:357
 msgid "Double-click to switch globally"
 msgstr "Doppelklick: Alle Felder wechseln"
 
-#: src/PostTypesController.php:96
-msgid "[ACFML] Error: Could not add post type \"%s\", it does not exist"
+#. translators: 1: Post Type Name
+#: src/PostTypesController.php:99
+#, fuzzy
+#| msgid "[ACFML] Error: Could not add post type \"%s\", it does not exist"
+msgid "Error: Could not add post type \"%s\", it does not exist"
 msgstr ""
 "[ACFML] Fehler: Konnte den Post Type \"%s\" nicht hinzufügen, da er nicht "
 "existiert"
 
-#: src/PostTypesController.php:298
+#: src/PostTypesController.php:304
 msgid "The default language is always active"
 msgstr "Die Standard-Sprache ist immer aktiv"
 
-#: src/PostTypesController.php:300
+#: src/PostTypesController.php:306
 msgid "Show language in frontend?"
 msgstr "Sprache im Frontend anzeigen?"
 
-#: src/PostTypesController.php:313
+#: src/PostTypesController.php:319
 msgid "Leave empty to generate the link from title"
 msgstr "Leer lassen, um den link aus dem Titel generieren zu lassen"
 
-#: src/PostTypesController.php:1067
-msgid "[ACFML] Successfully processed %s %s."
+#. translators: 1: number of posts, 2: post label (singular or plural)
+#: src/PostTypesController.php:1074
+#, fuzzy
+#| msgid "[ACFML] Successfully processed %s %s."
+msgid "Successfully processed %1$s %2$s."
 msgstr "[ACFML] %s %s wurden erfolgreich aktualisiert."
 
-#: src/PostTypesController.php:1069
+#: src/PostTypesController.php:1076
 msgid "post"
 msgid_plural "posts"
 msgstr[0] "Eintrag"
