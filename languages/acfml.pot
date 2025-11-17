@@ -1,0 +1,97 @@
+# Copyright (C) 2025 Rasso Hilber
+# This file is distributed under the same license as the ACF Multilingual plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: ACF Multilingual 3.2.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/acf-multilingual\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-11-17T08:23:37+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: acfml\n"
+
+#. Plugin Name of the plugin
+#: acf-multilingual.php
+msgid "ACF Multilingual"
+msgstr ""
+
+#. Description of the plugin
+#: acf-multilingual.php
+msgid "An experimental plugin for building multilingual websites using WordPress and Advanced Custom Fields 🌀"
+msgstr ""
+
+#. Author of the plugin
+#: acf-multilingual.php
+msgid "Rasso Hilber"
+msgstr ""
+
+#. Author URI of the plugin
+#: acf-multilingual.php
+msgid "https://rassohilber.com"
+msgstr ""
+
+#: src/Admin.php:153
+msgid "[ACFML] Rewrite Rules successfully flushed"
+msgstr ""
+
+#: src/Admin.php:183
+msgid "Switch your admin language"
+msgstr ""
+
+#: src/Admin.php:198
+msgid "Switch to %s"
+msgstr ""
+
+#: src/Admin.php:257
+msgid "ACF Multilingual requires the plugin %s to be installed and activated."
+msgstr ""
+
+#: src/Admin.php:275
+msgid "[ACFML] Pretty permalinks need to be activated. Please go to your %s and select e.g. 'Post name'."
+msgstr ""
+
+#: src/Admin.php:279
+msgid "permalink settings"
+msgstr ""
+
+#: src/Admin.php:294
+msgid "[ACFML] No config file found. Please copy the file <code>acfml.config.sample.json</code> from the plugin root to your theme root, rename it to <code>acfml.config.json</code> and adjust your settings inside."
+msgstr ""
+
+#: src/FieldsController.php:66
+msgid "Multilingual?"
+msgstr ""
+
+#: src/FieldsController.php:290
+msgid "[ACFML] Unknown field UI style '%s'. Please use %s."
+msgstr ""
+
+#: src/PostTypesController.php:96
+msgid "[ACFML] Error: Could not add post type \"%s\", it does not exist"
+msgstr ""
+
+#: src/PostTypesController.php:298
+msgid "The default language is always active"
+msgstr ""
+
+#: src/PostTypesController.php:300
+msgid "Show language in frontend?"
+msgstr ""
+
+#: src/PostTypesController.php:313
+msgid "Leave empty to generate the link from title"
+msgstr ""
+
+#: src/PostTypesController.php:1067
+msgid "[ACFML] Successfully processed %s %s."
+msgstr ""
+
+#: src/PostTypesController.php:1069
+msgid "post"
+msgid_plural "posts"
+msgstr[0] ""
+msgstr[1] ""

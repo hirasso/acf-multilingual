@@ -4,7 +4,7 @@
  * Plugin Name: ACF Multilingual
  * Version: 3.2.1
  * Author: Rasso Hilber
- * Description: A lightweight solution to support multiple languages with WordPress and Advanced Custom Fields
+ * Description: An experimental plugin for building multilingual websites using WordPress and Advanced Custom Fields 🌀
  * Author URI: https://rassohilber.com
  * Text Domain: acfml
  * Requires PHP: 8.2

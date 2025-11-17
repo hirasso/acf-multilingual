@@ -190,7 +190,7 @@ class ACFMultilingual
         }
 
         // Load from plugin lang folder.
-        \load_textdomain($domain, $this->get_file_path('lang/' . $mofile));
+        \load_textdomain($domain, $this->get_file_path('languages/' . $mofile));
     }
 
     /**
