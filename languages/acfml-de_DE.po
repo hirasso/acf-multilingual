@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ACF Multilingual\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/acf-multilingual\n"
-"POT-Creation-Date: 2025-11-17T09:07:03+00:00\n"
+"POT-Creation-Date: 2025-11-17T09:09:57+00:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -46,8 +46,8 @@ msgid "https://rassohilber.com"
 msgstr ""
 
 #: src/Admin.php:153
-msgid " Rewrite Rules successfully flushed"
-msgstr "Die Rewrite-Rules wurden erfolgreich erneuert"
+msgid "Rewrite Rules successfully flushed"
+msgstr "Die Rewrite-Rules wurden erfolgreich aktualisiert"
 
 #: src/Admin.php:183
 msgid "Switch your admin language"
@@ -65,16 +65,12 @@ msgstr "ACF Multilingual benötigt das Plugin %s."
 
 #. translators: 1: Link to the permalink settings
 #: src/Admin.php:282
-#, fuzzy
-#| msgid ""
-#| "[ACFML] Pretty permalinks need to be activated. Please go to your %s and "
-#| "select e.g. 'Post name'."
 msgid ""
 "Pretty permalinks need to be activated. Please go to your %s and select e.g. "
 "'Post name'."
 msgstr ""
-"[ACFML] 'Pretty Permalinks' sind nicht aktiviert. Bitte gehe zu den %s und "
-"wähle beispielsweise 'Beitragsname'."
+"'Pretty Permalinks' sind nicht aktiviert. Bitte gehe zu den %s und wähle "
+"beispielsweise 'Beitragsname'."
 
 #: src/Admin.php:286
 msgid "permalink settings"
@@ -93,10 +89,8 @@ msgstr "Mehrsprachig?"
 
 #. translators: 1: Unkown UI style name, 2: Comma-separated list of available UI styles
 #: src/FieldsController.php:291
-#, fuzzy
-#| msgid "[ACFML] Unknown field UI style '%s'. Please use %s."
-msgid "Unknown field UI style \"%1$s\". Please use %2$s."
-msgstr "[ACFML] Unbekannter field UI style '%s'. Please use %s."
+msgid "Unknown field UI style \"%1$s\". Please use one of %2$s."
+msgstr "Unbekannter Feld-UI-Style '%s'. Bitte benutze einen der folgenden: %s."
 
 #: src/FieldsController.php:357
 msgid "Double-click to switch globally"
@@ -104,12 +98,9 @@ msgstr "Doppelklick: Alle Felder wechseln"
 
 #. translators: 1: Post Type Name
 #: src/PostTypesController.php:99
-#, fuzzy
-#| msgid "[ACFML] Error: Could not add post type \"%s\", it does not exist"
 msgid "Error: Could not add post type \"%s\", it does not exist"
 msgstr ""
-"[ACFML] Fehler: Konnte den Post Type \"%s\" nicht hinzufügen, da er nicht "
-"existiert"
+"Fehler: Konnte den Post Type \"%s\" nicht hinzufügen, da er nicht existiert"
 
 #: src/PostTypesController.php:304
 msgid "The default language is always active"
@@ -125,10 +116,8 @@ msgstr "Leer lassen, um den link aus dem Titel generieren zu lassen"
 
 #. translators: 1: number of posts, 2: post label (singular or plural)
 #: src/PostTypesController.php:1074
-#, fuzzy
-#| msgid "[ACFML] Successfully processed %s %s."
 msgid "Successfully processed %1$s %2$s."
-msgstr "[ACFML] %s %s wurden erfolgreich aktualisiert."
+msgstr "%s %s wurden erfolgreich aktualisiert."
 
 #: src/PostTypesController.php:1076
 msgid "post"

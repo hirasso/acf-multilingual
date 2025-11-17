@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-17T09:07:39+00:00\n"
+"POT-Creation-Date: 2025-11-17T09:09:57+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: acfml\n"
@@ -72,7 +72,7 @@ msgstr ""
 
 #. translators: 1: Unkown UI style name, 2: Comma-separated list of available UI styles
 #: src/FieldsController.php:291
-msgid "Unknown field UI style \"%1$s\". Please use %2$s."
+msgid "Unknown field UI style \"%1$s\". Please use one of %2$s."
 msgstr ""
 
 #: src/FieldsController.php:357

@@ -285,10 +285,10 @@ class FieldsController
     {
         $ui_style = $field['acfml_ui_style'] ?? 'tabs';
         if (!$this->validate_ui_style($ui_style)) {
-            throw new \ErrorException(
+            throw new \Exception(
                 \sprintf(
                     /* translators: 1: Unkown UI style name, 2: Comma-separated list of available UI styles */
-                    '[ACFML] ' . \__('Unknown field UI style "%1$s". Please use %2$s.', 'acfml'),
+                    '[ACFML] ' . \__('Unknown field UI style "%1$s". Please use one of %2$s.', 'acfml'),
                     $ui_style,
                     $this->make_array_readable($this->available_ui_styles)
                 )
