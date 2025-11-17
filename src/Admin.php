@@ -298,7 +298,10 @@ class Admin
     {
         \add_action('admin_init', function () {
             $message = \wp_sprintf(
-                \__("No config file found. Please copy the file <code>acfml.config.sample.json</code> from the plugin root to your theme root, rename it to <code>acfml.config.json</code> and adjust your settings inside.", 'acfml')
+                /* translators: 1: Sample Config File Name, 2: Config File Name */
+                \__('No config file found. Please copy the file %1$s from the plugin root to your theme root, rename it to %3$s and adjust your settings inside.', 'acfml'),
+                '<code>acfml.config.sample.json</code>',
+                '<code>acfml.config.json</code>',
             );
             $this->add_notice('config-missing', $message, [
                 'type' => 'warning'

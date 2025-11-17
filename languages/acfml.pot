@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-17T09:03:29+00:00\n"
+"POT-Creation-Date: 2025-11-17T09:06:53+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: acfml\n"
@@ -61,8 +61,9 @@ msgstr ""
 msgid "permalink settings"
 msgstr ""
 
-#: src/Admin.php:301
-msgid "No config file found. Please copy the file <code>acfml.config.sample.json</code> from the plugin root to your theme root, rename it to <code>acfml.config.json</code> and adjust your settings inside."
+#. translators: 1: Sample Config File Name, 2: Config File Name
+#: src/Admin.php:302
+msgid "No config file found. Please copy the file %1$s from the plugin root to your theme root, rename it to %3$s and adjust your settings inside."
 msgstr ""
 
 #: src/FieldsController.php:66
