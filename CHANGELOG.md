@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.2.2
+
+### Patch Changes
+
+- 6e3c60b: Modernize the tooling for translating strings in the plugin
+- f201520: Fix and update the German plugin string translations
+
 ## 3.2.1
 
 ### Patch Changes
