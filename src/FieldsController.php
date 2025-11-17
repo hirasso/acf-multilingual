@@ -287,7 +287,8 @@ class FieldsController
         if (!$this->validate_ui_style($ui_style)) {
             throw new \ErrorException(
                 \sprintf(
-                    \__("[ACFML] Unknown field UI style '%s'. Please use %s.", 'acfml'),
+                    /* translators: 1: Unkown UI style name, 2: Comma-separated list of available UI styles */
+                    '[ACFML] ' . \__('Unknown field UI style "%1$s". Please use %2$s.', 'acfml'),
                     $ui_style,
                     $this->make_array_readable($this->available_ui_styles)
                 )
@@ -353,7 +354,7 @@ class FieldsController
     {
         \ob_start(); ?>
     <div class="acfml-tabs-wrap">
-      <div class="acfml-tabs acf-js-tooltip" title="<?= \__('Double-click to switch globally', $this->prefix) ?>">
+      <div class="acfml-tabs acf-js-tooltip" title="<?= \__('Double-click to switch globally', 'acfml') ?>">
       <?php foreach ($languages as $id => $language) : ?>
       <button class="acfml-tab <?= $language['slug'] === $default_field_language ? 'is-active' : '' ?>" data-language="<?= $language['slug'] ?>">
         <?= $language['name'] ?>

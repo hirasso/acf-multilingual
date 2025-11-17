@@ -47,7 +47,7 @@ class Admin
         // create the $notice object
         $notice = \wp_parse_args($args, [
             'key' => $key,
-            'message' => $message,
+            'message' => '[ACFML] ' . $message,
             'type' => 'warning',
             'is_dismissible' => false,
         ]);
@@ -150,7 +150,7 @@ class Admin
         // add success notice
         $this->add_notice(
             'flush-rewrite-rules',
-            \__('[ACFML] Rewrite Rules successfully flushed', 'acfml'),
+            \__(' Rewrite Rules successfully flushed', 'acfml'),
             [
                 'type' => 'success',
                 'is_dismissible' => true
@@ -195,7 +195,12 @@ class Admin
                 'parent' => 'acfml',
                 'id' => "acfml-switch-{$item['slug']}",
                 'title' => "{$item['display_name']}",
-                'meta'  => [ 'title' => \sprintf(\__('Switch to %s', 'acfml'), $item['display_name']) ],
+                'meta'  => [
+                    'title' => \sprintf(
+                        /* translators: 1: Language Name */
+                        \__('Switch to %s', 'acfml'),
+                        $item['display_name']
+                    ) ],
                 'href' => $item['url']
             ]);
         }
@@ -254,6 +259,7 @@ class Admin
             return;
         }
         $message = \wp_sprintf(
+            /* translators: 1: Link to the Advanced Custom Fields plugin */
             \__("ACF Multilingual requires the plugin %s to be installed and activated.", 'acfml'),
             '<a href="https://www.advancedcustomfields.com/" target="_blank">Advanced Custom Fields</a>',
         );
@@ -272,7 +278,8 @@ class Admin
             return;
         }
         $message = \wp_sprintf(
-            \__("[ACFML] Pretty permalinks need to be activated. Please go to your %s and select e.g. 'Post name'.", 'acfml'),
+            /* translators: 1: Link to the permalink settings */
+            \__("Pretty permalinks need to be activated. Please go to your %s and select e.g. 'Post name'.", 'acfml'),
             \wp_sprintf(
                 '<a href="%s">%s</a>',
                 \admin_url('options-permalink.php'),
@@ -291,7 +298,7 @@ class Admin
     {
         \add_action('admin_init', function () {
             $message = \wp_sprintf(
-                \__("[ACFML] No config file found. Please copy the file <code>acfml.config.sample.json</code> from the plugin root to your theme root, rename it to <code>acfml.config.json</code> and adjust your settings inside.", 'acfml')
+                \__("No config file found. Please copy the file <code>acfml.config.sample.json</code> from the plugin root to your theme root, rename it to <code>acfml.config.json</code> and adjust your settings inside.", 'acfml')
             );
             $this->add_notice('config-missing', $message, [
                 'type' => 'warning'

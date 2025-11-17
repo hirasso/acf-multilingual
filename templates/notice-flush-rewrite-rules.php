@@ -1,6 +1,6 @@
-<p><?= \__('[ACFML] Your settings have changed.', 'acfml') ?></p>
+<p>[ACFML] <?php \_e('Your settings have changed.', 'acfml') ?></p>
 
 <form method="POST">
   <?php \wp_nonce_field('acfml_flush_rewrite_rules', '_acfml_nonce'); ?>
-  <input type="submit" class="button" value="<?= \__('Flush Rewrite Rules and Reprocess Posts', 'acfml') ?>">
+  <input type="submit" class="button" value="<?php \_e('Flush Rewrite Rules and Reprocess Posts', 'acfml') ?>">
 </form>

@@ -93,7 +93,13 @@ class PostTypesController
             return;
         }
         if (!\post_type_exists($post_type)) {
-            \error_log(\sprintf(\__('[ACFML] Error: Could not add post type "%s", it does not exist', 'acfml'), $post_type));
+            \error_log(
+                '[ACFML]' . \sprintf(
+                    /* translators: 1: Post Type Name */
+                    \__('Error: Could not add post type "%s", it does not exist', 'acfml'),
+                    \esc_html($post_type)
+                )
+            );
         }
         // add the post type and it's arguments to the array
         $this->multilingual_post_types[$post_type] = $args;
@@ -1064,7 +1070,8 @@ class PostTypesController
         $this->acfml->admin->add_notice(
             'resave-posts',
             \wp_sprintf(
-                \__('[ACFML] Successfully processed %s %s.', 'acfml'),
+                /* translators: 1: number of posts, 2: post label (singular or plural) */
+                \__('Successfully processed %1$s %2$s.', 'acfml'),
                 \number_format_i18n($resaved_posts_count),
                 \_n('post', 'posts', $resaved_posts_count, 'acfml')
             ),

@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-17T08:23:37+00:00\n"
+"POT-Creation-Date: 2025-11-17T09:03:29+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: acfml\n"
@@ -35,62 +35,72 @@ msgid "https://rassohilber.com"
 msgstr ""
 
 #: src/Admin.php:153
-msgid "[ACFML] Rewrite Rules successfully flushed"
+msgid " Rewrite Rules successfully flushed"
 msgstr ""
 
 #: src/Admin.php:183
 msgid "Switch your admin language"
 msgstr ""
 
-#: src/Admin.php:198
+#. translators: 1: Language Name
+#: src/Admin.php:201
 msgid "Switch to %s"
 msgstr ""
 
-#: src/Admin.php:257
+#. translators: 1: Link to the Advanced Custom Fields plugin
+#: src/Admin.php:263
 msgid "ACF Multilingual requires the plugin %s to be installed and activated."
 msgstr ""
 
-#: src/Admin.php:275
-msgid "[ACFML] Pretty permalinks need to be activated. Please go to your %s and select e.g. 'Post name'."
+#. translators: 1: Link to the permalink settings
+#: src/Admin.php:282
+msgid "Pretty permalinks need to be activated. Please go to your %s and select e.g. 'Post name'."
 msgstr ""
 
-#: src/Admin.php:279
+#: src/Admin.php:286
 msgid "permalink settings"
 msgstr ""
 
-#: src/Admin.php:294
-msgid "[ACFML] No config file found. Please copy the file <code>acfml.config.sample.json</code> from the plugin root to your theme root, rename it to <code>acfml.config.json</code> and adjust your settings inside."
+#: src/Admin.php:301
+msgid "No config file found. Please copy the file <code>acfml.config.sample.json</code> from the plugin root to your theme root, rename it to <code>acfml.config.json</code> and adjust your settings inside."
 msgstr ""
 
 #: src/FieldsController.php:66
 msgid "Multilingual?"
 msgstr ""
 
-#: src/FieldsController.php:290
-msgid "[ACFML] Unknown field UI style '%s'. Please use %s."
+#. translators: 1: Unkown UI style name, 2: Comma-separated list of available UI styles
+#: src/FieldsController.php:291
+msgid "Unknown field UI style \"%1$s\". Please use %2$s."
 msgstr ""
 
-#: src/PostTypesController.php:96
-msgid "[ACFML] Error: Could not add post type \"%s\", it does not exist"
+#: src/FieldsController.php:357
+msgid "Double-click to switch globally"
 msgstr ""
 
-#: src/PostTypesController.php:298
+#. translators: 1: Post Type Name
+#: src/PostTypesController.php:99
+msgid "Error: Could not add post type \"%s\", it does not exist"
+msgstr ""
+
+#: src/PostTypesController.php:304
 msgid "The default language is always active"
 msgstr ""
 
-#: src/PostTypesController.php:300
+#: src/PostTypesController.php:306
 msgid "Show language in frontend?"
 msgstr ""
 
-#: src/PostTypesController.php:313
+#: src/PostTypesController.php:319
 msgid "Leave empty to generate the link from title"
 msgstr ""
 
-#: src/PostTypesController.php:1067
-msgid "[ACFML] Successfully processed %s %s."
+#. translators: 1: number of posts, 2: post label (singular or plural)
+#: src/PostTypesController.php:1074
+msgid "Successfully processed %1$s %2$s."
 msgstr ""
 
-#: src/PostTypesController.php:1069
+#: src/PostTypesController.php:1076
 msgid "post"
 msgid_plural "posts"
 msgstr[0] ""
