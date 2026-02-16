@@ -1,8 +1,8 @@
-# Copyright (C) 2025 Rasso Hilber
+# Copyright (C) 2026 Rasso Hilber
 # This file is distributed under the same license as the ACF Multilingual plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: ACF Multilingual 3.2.1\n"
+"Project-Id-Version: ACF Multilingual 3.2.2\n"
 "Report-Msgid-Bugs-To: https://github.com/hirasso/acf-multilingual/\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.11.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: acfml\n"
 
 #. Plugin Name of the plugin
@@ -44,16 +44,19 @@ msgstr ""
 
 #. translators: 1: Language Name
 #: src/Admin.php:201
+#, php-format
 msgid "Switch to %s"
 msgstr ""
 
 #. translators: 1: Link to the Advanced Custom Fields plugin
 #: src/Admin.php:263
+#, php-format
 msgid "ACF Multilingual requires the plugin %s to be installed and activated."
 msgstr ""
 
 #. translators: 1: Link to the permalink settings
 #: src/Admin.php:282
+#, php-format
 msgid "Pretty permalinks need to be activated. Please go to your %s and select e.g. 'Post name'."
 msgstr ""
 
@@ -63,6 +66,7 @@ msgstr ""
 
 #. translators: 1: Sample Config File Name, 2: Config File Name
 #: src/Admin.php:302
+#, php-format
 msgid "No config file found. Please copy the file %1$s from the plugin root to your theme root, rename it to %3$s and adjust your settings inside."
 msgstr ""
 
@@ -71,16 +75,18 @@ msgid "Multilingual?"
 msgstr ""
 
 #. translators: 1: Unkown UI style name, 2: Comma-separated list of available UI styles
-#: src/FieldsController.php:291
+#: src/FieldsController.php:295
+#, php-format
 msgid "Unknown field UI style \"%1$s\". Please use one of %2$s."
 msgstr ""
 
-#: src/FieldsController.php:357
+#: src/FieldsController.php:361
 msgid "Double-click to switch globally"
 msgstr ""
 
 #. translators: 1: Post Type Name
 #: src/PostTypesController.php:99
+#, php-format
 msgid "Error: Could not add post type \"%s\", it does not exist"
 msgstr ""
 
@@ -98,6 +104,7 @@ msgstr ""
 
 #. translators: 1: number of posts, 2: post label (singular or plural)
 #: src/PostTypesController.php:1074
+#, php-format
 msgid "Successfully processed %1$s %2$s."
 msgstr ""
 
