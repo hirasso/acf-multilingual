@@ -5,9 +5,6 @@ inputs:
   php-version:
     description: The PHP version to install
     default: 8.3
-  composer-options:
-    description: 'Additional options for composer install'
-    default: ''
 
 runs:
   using: composite
@@ -21,7 +18,7 @@ runs:
 
     - name: Install Composer Dependencies
       shell: bash
-      run: composer install --prefer-dist --no-progress ${{ inputs.composer-options }}
+      run: composer install --prefer-dist --no-progress --ignore-platform-req=php+
 
     - name: Setup PNPM
       uses: pnpm/action-setup@v4

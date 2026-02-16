@@ -20,9 +20,6 @@ jobs:
       fail-fast: true
       matrix:
         php: [8.2, 8.3, 8.4, 8.5]
-        include:
-          - php: 8.6
-            composer-options: '--ignore-platform-req=php+'
 
     steps:
       - uses: actions/checkout@v4
@@ -31,7 +28,6 @@ jobs:
         uses: ./.github/actions/shared-setup
         with:
           php-version: ${{ matrix.php }}
-          composer-options: ${{ matrix.composer-options }}
 
       - name: Setup and Start wp-env
         uses: godaddy-wordpress/setup-wp-env@v1
