@@ -207,8 +207,12 @@ class FieldsController
         $default_language = $this->acfml->get_default_language();
         $untranslated_value = $value;
 
+        // Clone fields have their key stored under '__key'
+        $field_key = $field['__key'] ?? $field['key'];
+        $default_language_field_key = "{$field_key}_$default_language";
+
         $this->add_filter_once(
-            "acf/load_value/key={$field['key']}_$default_language",
+            "acf/load_value/key={$default_language_field_key}",
             function ($translated_value) use ($untranslated_value) {
                 return !empty($translated_value) ? $translated_value : $untranslated_value;
             }
