@@ -1,9 +1,13 @@
 name: Run Shared Setup
+description: Setup the shared environment
 
 inputs:
   php-version:
     description: The PHP version to install
     default: 8.3
+  composer-options:
+    description: 'Additional options for composer install'
+    default: ''
 
 runs:
   using: composite
@@ -16,7 +20,8 @@ runs:
         coverage: xdebug
 
     - name: Install Composer Dependencies
-      uses: ramsey/composer-install@v3
+      shell: bash
+      run: composer install --prefer-dist --no-progress ${{ inputs.composer-options }}
 
     - name: Setup PNPM
       uses: pnpm/action-setup@v4
