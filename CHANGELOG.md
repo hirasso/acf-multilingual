@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.2.3
+
+### Patch Changes
+
+- 107ebb7: fix `inject_previous_monolingual_value` for clone fields
+- 8434d0a: Run tests against PHP8.2 - 8.5
+
 ## 3.2.2
 
 ### Patch Changes
