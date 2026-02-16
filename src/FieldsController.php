@@ -190,7 +190,7 @@ class FieldsController
 
 
     /**
-     * Automatically loads possible value of previously monolingual field
+     * Automatically load possible value of previously monolingual field
      * to the sub_field assigned to the default language
      */
     public function inject_previous_monolingual_value(mixed $value, int|string $post_id, array $field): mixed
@@ -229,7 +229,7 @@ class FieldsController
      */
     public function add_filter_once(string $hook, callable $callback, int $priority = 10, int $args = 1): bool
     {
-        $singular = function () use ($hook, $callback, $priority, $args, &$singular) {
+        $singular = function () use ($hook, $callback, $priority, &$singular) {
             \remove_filter($hook, $singular, $priority);
             return \call_user_func_array($callback, \func_get_args());
         };
@@ -238,7 +238,7 @@ class FieldsController
     }
 
     /**
-     * Formats a fields value
+     * Format a fields value
      */
     public function format_multilingual_value(mixed $value, int|string $post_id, array $field): mixed
     {
