@@ -10,3 +10,6 @@ acfml.config.json
 # dependencies
 wp
 vendor
+
+# claude
+.claude/settings.local.json
