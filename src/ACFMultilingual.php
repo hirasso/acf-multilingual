@@ -128,9 +128,8 @@ class ACFMultilingual
         \add_action('wp_head', [$this, 'wp_head']);
 
         $this->add_link_filters();
-        \add_action('template_redirect', [$this, 'redirect_front_page'], 1);
         \add_action('template_redirect', [$this, 'redirect_default_language_urls']);
-        \add_action('init', [$this, 'save_language_in_cookie']);
+        \add_action('wp_enqueue_scripts', [$this, 'enqueue_frontend_script'], 10);
         \add_action('init', [$this, 'add_multilingual_object_types'], 11);
         \add_filter('language_attributes', [$this, 'language_attributes'], 10, 2);
 
@@ -195,8 +194,6 @@ class ACFMultilingual
 
     /**
      * Return Plugin Prefix
-     *
-     * @return string
      */
     public function get_prefix(): string
     {
@@ -237,8 +234,11 @@ class ACFMultilingual
      */
     public function enqueue_admin_scripts(): void
     {
-        \wp_enqueue_script("$this->prefix-admin", $this->asset_uri("resources/acf-multilingual.js"), ['jquery'], null, true);
-        \wp_add_inline_script("$this->prefix-admin", $this->get_admin_inline_script(), "before");
+        \wp_enqueue_script("$this->prefix-admin", $this->asset_uri("resources/acfml-admin.js"), ['jquery'], null, true);
+        \wp_add_inline_script("$this->prefix-admin", $this->get_inline_script([
+            'isMobile' => \wp_is_mobile(),
+            'cookieHashForCurrentUri' => $this->get_cookie_hash_for_current_uri()
+        ]), "before");
     }
 
     /**
@@ -246,31 +246,25 @@ class ACFMultilingual
      */
     public function enqueue_admin_style(): void
     {
-        \wp_enqueue_style("$this->prefix-admin", $this->asset_uri("resources/acf-multilingual.css"), [], null);
+        \wp_enqueue_style("$this->prefix-admin", $this->asset_uri("resources/acfml-admin.css"), [], null);
     }
 
     /**
      * Add an inline script
-     *
-     * @return string
      */
-    private function get_admin_inline_script(): string
+    private function get_inline_script(array $additionalData = []): string
     {
-        $settings = [
+        $data = \json_encode([
             'defaultLanguage' => $this->get_default_language(),
+            'currentLanguage' => $this->get_current_language(),
             'languages' => $this->get_languages(),
-            'isMobile' => \wp_is_mobile(),
-            'cookieHashForCurrentUri' => $this->get_cookie_hash_for_current_uri()
-        ];
-        ?><script id="acfml-settings"><?php \ob_start() ?>
-    var ACFMultilingual = <?= \json_encode($settings) ?>;
-    <?php $script = \ob_get_clean(); ?></script><?php return $script;
+            ...$additionalData
+        ]);
+        return "window.ACFMultilingual = {$data}";
     }
 
     /**
      * Get the hashed path for a cookie
-     *
-     * @return string
      */
     public function get_cookie_hash_for_current_uri(): string
     {
@@ -583,9 +577,7 @@ class ACFMultilingual
     }
 
     /**
-     * Get default language
-     *
-     * @return string|null
+     * Get default language|null
      */
     public function get_default_language(): ?string
     {
@@ -611,8 +603,6 @@ class ACFMultilingual
 
     /**
      * Detect language in different contexts
-     *
-     * @return void
      */
     public function detect_language(): void
     {
@@ -664,8 +654,6 @@ class ACFMultilingual
 
     /**
      * Resets the current language to the defined value
-     *
-     * @return string
      */
     public function reset_language(): string
     {
@@ -675,8 +663,6 @@ class ACFMultilingual
 
     /**
      * Get language
-     *
-     * @return string
      */
     public function get_current_language(): string
     {
@@ -843,8 +829,6 @@ class ACFMultilingual
 
     /**
      * Add Link filters
-     *
-     * @return void
      */
     public function add_link_filters(): void
     {
@@ -897,8 +881,6 @@ class ACFMultilingual
 
     /**
      * Get current URL from $_SERVER
-     *
-     * @return string
      */
     private function get_current_url(): string
     {
@@ -919,8 +901,6 @@ class ACFMultilingual
 
     /**
      * Gets and converts the frontend locale
-     *
-     * @return string
      */
     private function get_frontend_locale(): string
     {
@@ -955,8 +935,6 @@ class ACFMultilingual
 
     /**
      * Hooks into wp_head and prints out hreflang tags
-     *
-     * @return void
      */
     public function wp_head(): void
     {
@@ -1168,62 +1146,25 @@ class ACFMultilingual
     }
 
     /**
-     * Redirects the front-page to the preferred language
-     *
-     * @return void
+     * Enqueue the language redirect script in the head on front-end pages,
+     * passing data via wp_add_inline_script
      */
-    public function redirect_front_page(): void
+    public function enqueue_frontend_script(): void
     {
-        // allow deactivation
-        if (!\apply_filters('acfml/redirect_front_page', true)) {
+        if (!\apply_filters('acfml/redirect_language', true)) {
             return;
         }
 
-        if (!\is_front_page() || \is_robots()) {
+        if (\is_user_logged_in()) {
             return;
         }
 
-        $current_language = $this->get_current_language();
+        $handle = "{$this->prefix}-frontend";
 
-        $user_language = isset($_SERVER["HTTP_ACCEPT_LANGUAGE"]) ? \strtolower(\substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2)) : null;
-        if (!$user_language) {
-            return;
-        }
-
-        if ($_COOKIE['acfml-language'] ?? null) {
-            return;
-        }
-
-        if (!$this->is_language_enabled($user_language)) {
-            $user_language = $this->get_default_language();
-        }
-
-        if ($current_language === $user_language) {
-            return;
-        }
-
-        \wp_redirect(\user_trailingslashit($this->home_url('', $user_language)));
-        exit;
-
-    }
-
-    /**
-     * Save the language in a cookie
-     *
-     * @return void
-     */
-    public function save_language_in_cookie(): void
-    {
-        if (\is_admin()) {
-            return;
-        }
-
-        // allow deactivation
-        if (!\apply_filters('acfml/save_language_in_cookie', true)) {
-            return;
-        }
-
-        \setcookie("acfml-language", $this->get_current_language(), \time() + YEAR_IN_SECONDS, '/');
+        \wp_enqueue_script($handle, $this->asset_uri('resources/acfml-frontend.js'), [], null, ['in_footer' => false]);
+        \wp_add_inline_script($handle, $this->get_inline_script([
+            'isFrontPage' => \is_front_page()
+        ]), 'before');
     }
 
     /**
@@ -1240,8 +1181,6 @@ class ACFMultilingual
 
     /**
      * Add a custom sitemaps provider
-     *
-     * @return void
      */
     public function add_sitemaps_provider(): void
     {
@@ -1255,12 +1194,9 @@ class ACFMultilingual
 
     /**
      * Redirect some urls to the correct one
-     *
-     * @return void
      */
     public function redirect_default_language_urls(): void
     {
-
         $url = $this->get_current_url();
 
         // bail early for URLs that are not in the default language
@@ -1293,8 +1229,6 @@ class ACFMultilingual
 
     /**
      * Get hashed settings
-     *
-     * @return string
      */
     public function get_hashed_settings(): string
     {

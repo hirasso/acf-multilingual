@@ -186,14 +186,18 @@
      * Multilingual Post Titles
      */
     initMultilingualPostTitle() {
+      if (!window.ACFMultilingual) {
+        return console.error("window.ACFMultilingual is undefined");
+      }
+      const isMobile = window.ACFMultilingual.isMobile;
       acf.addAction(`ready_field/name=acfml_post_title`, (field) => {
         $("#titlediv").remove();
         $('[data-setting="title"]').remove();
       });
       acf.addAction(
-        `ready_field/key=field_acfml_post_title_${ACFMultilingual.defaultLanguage}`,
+        `ready_field/key=field_acfml_post_title_${window.ACFMultilingual.defaultLanguage}`,
         (field) => {
-          if (!ACFMultilingual.isMobile && !field.val()) field.$input().focus();
+          if (!isMobile && !field.val()) field.$input().focus();
         },
       );
       acf.addAction(`ready_field/key=field_acfml_slug`, ($field) => {
@@ -266,7 +270,8 @@
      * @param {any} value
      */
     addToStore(key, value) {
-      Cookie.set(this.getStorageKey(key), JSON.stringify(value), 1);
+      const storageKey = this.getStorageKey(key);
+      if (storageKey) Cookie.set(storageKey, JSON.stringify(value), 1);
       // sessionStorage.setItem(this.getStorageKey(key), JSON.stringify(value));
     }
 
@@ -275,7 +280,8 @@
      * @param {string} key
      */
     removeFromStore(key) {
-      Cookie.delete(this.getStorageKey(key));
+      const storageKey = this.getStorageKey(key);
+      if (storageKey) Cookie.delete(storageKey);
       // sessionStorage.removeItem(this.getStorageKey(key));
     }
 
@@ -285,17 +291,23 @@
      */
     getFromStore(key) {
       // let value = sessionStorage.getItem(this.getStorageKey(key));
-      let value = Cookie.get(this.getStorageKey(key));
+      const storageKey = this.getStorageKey(key);
+      if (!storageKey) return null;
+      const value = Cookie.get(storageKey);
       return value ? JSON.parse(value) : value;
     }
 
     /**
      * Get the storage key
      * @param {string} key
-     * @returns {string}
+     * @returns {string|undefined}
      */
     getStorageKey(key) {
-      return `${key}_${ACFMultilingual.cookieHashForCurrentUri}`;
+      if (!window.ACFMultilingual?.cookieHashForCurrentUri) {
+        console.error("No cookie hash found for storage key");
+        return undefined;
+      }
+      return `${key}_${window.ACFMultilingual.cookieHashForCurrentUri}`;
     }
   }
 

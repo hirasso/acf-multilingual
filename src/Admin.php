@@ -13,9 +13,6 @@ class Admin
      */
     public function __construct(private ACFMultilingual $acfml)
     {
-
-
-
         \add_action('admin_notices', [$this, 'maybe_add_notice_acf_missing'], 9);
         \add_action('admin_notices', [$this, 'show_added_notices']);
 
@@ -59,8 +56,6 @@ class Admin
 
     /**
      * Get the transient name for the current user
-     *
-     * @return string
      */
     private function get_transient_name(): string
     {
@@ -70,8 +65,6 @@ class Admin
 
     /**
      * Shows admin notices from transient
-     *
-     * @return void
      */
     public function show_added_notices(): void
     {
