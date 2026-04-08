@@ -602,8 +602,8 @@ class PostTypesController
         // Always use the first post_type in the array
         $post_type = $post_types[0];
 
-        // don't do anything if the post type is not multilingual
-        if (!$this->is_multilingual_post_type($post_type)) {
+        // don't do anything if the post type is not multilingual AND supports a title
+        if (!$this->is_multilingual_post_type($post_type, true)) {
             return;
         }
 
@@ -625,12 +625,6 @@ class PostTypesController
             if ($post_type_object) {
                 unset($query->query_vars[$post_type_object->query_var]);
             }
-        }
-
-        // Do not handle posts that do not support a title
-        // @TODO does this make sense??
-        if (!$this->post_type_supports_lang_active($post_type)) {
-            return;
         }
 
         // Allow posts to be set to non-public in the frontend
@@ -684,18 +678,6 @@ class PostTypesController
         $query->set('meta_query', $meta_query);
         $query->set('orderby', $orderby);
 
-    }
-
-    /**
-     * Should posts of a post type be checked for acfml_lang_active_{lang}?
-     */
-    private function post_type_supports_lang_active(string $post_type): bool
-    {
-        return \apply_filters(
-            'acfml/post_type_supports_lang_active',
-            \post_type_supports($post_type, 'title'),
-            $post_type
-        );
     }
 
     /**
@@ -844,11 +826,12 @@ class PostTypesController
         $postname_rewrite_tag = "";
 
         $this->acfml->remove_link_filters();
+
         // get the unfiltered permalink
         $permalink_native = \get_permalink($post);
-
         // get the permalink for the post, leaving the %postname% tag untouched
         $link_template = \get_permalink($post, true);
+
         $this->acfml->add_link_filters();
 
         // return the default permalink if the language is the default one
@@ -856,8 +839,8 @@ class PostTypesController
             return $permalink_native;
         }
 
-        // return the native permalink, prefixed with the language, if the post type shouldn't be checked
-        if (!$this->post_type_supports_lang_active(\get_post_type($post))) {
+        // return the native permalink, prefixed with the language for post types that don't support a title
+        if (!$this->is_multilingual_post_type($post->post_type, true)) {
             return $this->acfml->simple_convert_url($permalink_native, $language);
         }
 

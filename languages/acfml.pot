@@ -103,12 +103,12 @@ msgid "Leave empty to generate the link from title"
 msgstr ""
 
 #. translators: 1: number of posts, 2: post label (singular or plural)
-#: src/PostTypesController.php:1095
+#: src/PostTypesController.php:1078
 #, php-format
 msgid "Successfully processed %1$s %2$s."
 msgstr ""
 
-#: src/PostTypesController.php:1097
+#: src/PostTypesController.php:1080
 msgid "post"
 msgid_plural "posts"
 msgstr[0] ""
