@@ -84,7 +84,7 @@ class PostTypesController
     /**
      * Add a post type for translating the title and slugs
      */
-    public function add_post_type(string $post_type, ?array $args = []): void
+    public function add_post_type(string $post_type, array $args = []): void
     {
         global $wp_post_types;
         // attachments are not supported. They are horrible edge cases :P
@@ -116,23 +116,20 @@ class PostTypesController
     /**
      * Get multilingual post types
      */
-    public function get_multilingual_post_types(?string $format = 'names', $check_supports_title = true): array
+    public function get_multilingual_post_types(string $format = 'names', bool $check_supports_title = true): array
     {
-        $post_types = $this->multilingual_post_types;
-        if ($check_supports_title) {
-            foreach ($post_types as $pt => $value) {
-                if (!\post_type_supports($pt, 'title')) {
-                    unset($post_types[$pt]);
-                }
-            }
-        }
+        $post_types = \array_filter(
+            $this->multilingual_post_types,
+            fn (string $pt) => $check_supports_title ? \post_type_supports($pt, 'title') : true,
+            \ARRAY_FILTER_USE_KEY
+        );
         return $format === 'names' ? \array_keys($post_types) : $post_types;
     }
 
     /**
      * Check if a given post type is multilingual
      */
-    public function is_multilingual_post_type(string $post_type, ?bool $check_supports_title = false): bool
+    public function is_multilingual_post_type(string $post_type, bool $check_supports_title = false): bool
     {
         $post_types = $this->get_multilingual_post_types('names', $check_supports_title);
         return \in_array($post_type, $post_types);
@@ -210,7 +207,6 @@ class PostTypesController
      */
     public function setup_acf_fields(): void
     {
-
         $post_types = $this->get_multilingual_post_types();
 
         // bail early if no post types support `multilingual-title`
@@ -259,7 +255,6 @@ class PostTypesController
 
         // prepare slug fields for each language
         foreach ($this->acfml->get_languages('slug') as $lang) {
-
             \add_filter("acf/prepare_field/key=field_acfml_slug_$lang", function ($field) use ($lang) {
                 global $post;
 
@@ -607,8 +602,8 @@ class PostTypesController
         // Always use the first post_type in the array
         $post_type = $post_types[0];
 
-        // don't do anything if the post type is not multilingual
-        if (!$this->is_multilingual_post_type($post_type)) {
+        // don't do anything if the post type is not multilingual AND supports a title
+        if (!$this->is_multilingual_post_type($post_type, true)) {
             return;
         }
 
@@ -632,7 +627,7 @@ class PostTypesController
             }
         }
 
-        // Allow posts to be set to non-public
+        // Allow posts to be set to non-public in the frontend
         if (!\is_admin()) {
             $meta_query['acfml_lang_active'] = [
                 [
@@ -664,7 +659,7 @@ class PostTypesController
             // accounts for something like ['menu_order' => 'asc', 'post_title' => 'DESC' ]
             $orderby['acfml_post_title'] = $orderby['post_title'];
             unset($orderby['post_title']);
-        } elseif (\in_array('title', \explode(' ', $orderby))) {
+        } elseif (\is_string($orderby) && \in_array('title', \explode(' ', $orderby))) {
             // accounts for crazy strings like 'menu_order title'
             $orderby_fields = \explode(' ', $orderby);
             $orderby = [];
@@ -814,7 +809,6 @@ class PostTypesController
      */
     public function get_post_link(\WP_Post $post, string $language, array $args = []): string
     {
-
         $args = $this->acfml->to_object(\wp_parse_args($args, [
             'check_lang_active' => true,
             'is_sample' => false
@@ -832,15 +826,22 @@ class PostTypesController
         $postname_rewrite_tag = "";
 
         $this->acfml->remove_link_filters();
+
         // get the unfiltered permalink
         $permalink_native = \get_permalink($post);
         // get the permalink for the post, leaving the %postname% tag untouched
         $link_template = \get_permalink($post, true);
+
         $this->acfml->add_link_filters();
 
         // return the default permalink if the language is the default one
         if ($this->acfml->is_default_language($language)) {
             return $permalink_native;
+        }
+
+        // return the native permalink, prefixed with the language for post types that don't support a title
+        if (!$this->is_multilingual_post_type($post->post_type, true)) {
+            return $this->acfml->simple_convert_url($permalink_native, $language);
         }
 
         // remove possible parent page uri from attachment urls
@@ -918,12 +919,15 @@ class PostTypesController
         if ($this->acfml->is_default_language($language)) {
             return true;
         }
+
         // get the value from the DB
         $is_active = \get_field("acfml_lang_active_$language", $post->ID);
+
         // return true if unset
         if (\in_array($is_active, [null, ""])) {
             return true;
         }
+
         return \intval($is_active) === 1;
     }
 
@@ -1060,7 +1064,6 @@ class PostTypesController
      */
     public function maybe_resave_posts(): void
     {
-
         $resaved_posts_count = $this->resave_all_posts();
         if ($resaved_posts_count === 0) {
             return;

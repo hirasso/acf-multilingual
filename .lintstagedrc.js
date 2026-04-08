@@ -4,8 +4,9 @@
 export default {
   "**/*.{js,css}": ["prettier --write"],
   "**/*.php": [
-    "vendor/bin/phpstan analyze --memory-limit=1G",
-    "vendor/bin/pint",
-    "tools/make-pot.sh",
+    "pnpm run format:php",
+    () => "pnpm run analyse:php", // ← ignore files (otherwise pest files would be analysed, too)
+    () => "tools/make-pot.sh", // ← ignore files
+    () => "git add ./languages", // ← ignore files
   ],
 };

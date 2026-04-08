@@ -1,18 +1,22 @@
-declare const ACFMultilingual: {
-  defaultLanguage?: string;
-  languages: {
-    slug: string;
-    locale: string;
-    name: string;
-    dir?: string;
-  }[];
-  isMobile: boolean;
-  cookieHashForCurrentUri: string;
-};
 
 interface Window {
-  ACFMultilingual?: ACFMultilingual;
+  ACFMultilingual?: {
+    defaultLanguage: string;
+    currentLanguage: string;
+    languages: Record<string, {
+      slug: string;
+      locale: string;
+      name: string;
+      dir?: string;
+    }>;
+    /** only in the admin */
+    isMobile?: boolean;
+    cookieHashForCurrentUri?: string;
+    /** only in the frontend */
+    isFrontPage?: boolean;
+  };
 }
+
 
 declare namespace acf {
   function addAction(action: string, callback: (...args: any[]) => void): void;

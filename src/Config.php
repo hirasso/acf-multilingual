@@ -49,8 +49,6 @@ class Config
 
     /**
      * Is the config loaded
-     *
-     * @return boolean
      */
     public function is_loaded(): bool
     {
