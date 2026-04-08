@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.2.4
+
+### Patch Changes
+
+- db1f1e2: Redirect the front page via JavaScript, to make it work with static caching
+- df086e4: Allow multilingual post types that don't support 'title'
+
 ## 3.2.3
 
 ### Patch Changes
