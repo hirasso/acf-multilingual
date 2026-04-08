@@ -664,7 +664,7 @@ class PostTypesController
             // accounts for something like ['menu_order' => 'asc', 'post_title' => 'DESC' ]
             $orderby['acfml_post_title'] = $orderby['post_title'];
             unset($orderby['post_title']);
-        } elseif (\in_array('title', \explode(' ', $orderby))) {
+        } elseif (\is_string($orderby) && \in_array('title', \explode(' ', $orderby))) {
             // accounts for crazy strings like 'menu_order title'
             $orderby_fields = \explode(' ', $orderby);
             $orderby = [];
