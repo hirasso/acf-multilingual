@@ -90,25 +90,25 @@ msgstr ""
 msgid "Error: Could not add post type \"%s\", it does not exist"
 msgstr ""
 
-#: src/PostTypesController.php:304
+#: src/PostTypesController.php:302
 msgid "The default language is always active"
 msgstr ""
 
-#: src/PostTypesController.php:306
+#: src/PostTypesController.php:304
 msgid "Show language in frontend?"
 msgstr ""
 
-#: src/PostTypesController.php:319
+#: src/PostTypesController.php:317
 msgid "Leave empty to generate the link from title"
 msgstr ""
 
 #. translators: 1: number of posts, 2: post label (singular or plural)
-#: src/PostTypesController.php:1074
+#: src/PostTypesController.php:1072
 #, php-format
 msgid "Successfully processed %1$s %2$s."
 msgstr ""
 
-#: src/PostTypesController.php:1076
+#: src/PostTypesController.php:1074
 msgid "post"
 msgid_plural "posts"
 msgstr[0] ""

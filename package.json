@@ -14,7 +14,7 @@
     "format:php": "./vendor/bin/pint",
     "analyse": "pnpm run analyse:js && pnpm run analyse:php",
     "analyse:js": "pnpm exec tsc --noEmit --project ./jsconfig.json",
-    "analyse:php": "vendor/bin/phpstan analyze --memory-limit=1G",
+    "analyse:php": "vendor/bin/phpstan analyze --memory-limit=2G",
     "version": "pnpm changeset version && bin/cli.js version:patch",
     "wp-env": "wp-env",
     "wp-env:cli": "pnpm run wp-env run cli --env-cwd=wp-content/plugins/acf-multilingual",

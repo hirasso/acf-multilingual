@@ -1291,7 +1291,7 @@ class ACFMultilingual
         if (\is_array($log) || \is_object($log)) {
             $log = \print_r($log, true);
         }
-        // @phpstan-ignore constant.notFound
+
         $dir = WP_CONTENT_DIR;
         if (!\is_dir($dir)) {
             \mkdir($dir);

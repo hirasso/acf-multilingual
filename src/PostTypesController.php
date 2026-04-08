@@ -258,7 +258,6 @@ class PostTypesController
 
         // prepare slug fields for each language
         foreach ($this->acfml->get_languages('slug') as $lang) {
-
             \add_filter("acf/prepare_field/key=field_acfml_slug_$lang", function ($field) use ($lang) {
                 global $post;
 
