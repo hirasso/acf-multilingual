@@ -627,8 +627,14 @@ class PostTypesController
             }
         }
 
-        // Allow posts to be set to non-public
-        if (!\is_admin() && $this->post_type_supports_lang_active($post_type)) {
+        // Do not handle posts that do not support a title
+        // @TODO does this make sense??
+        if (!$this->post_type_supports_lang_active($post_type)) {
+            return;
+        }
+
+        // Allow posts to be set to non-public in the frontend
+        if (!\is_admin()) {
             $meta_query['acfml_lang_active'] = [
                 [
                     'key' => "acfml_lang_active_$language",
