@@ -631,7 +631,7 @@ class PostTypesController
         }
 
         // Allow posts to be set to non-public
-        if (!\is_admin()) {
+        if (!\is_admin() && $this->post_type_supports_lang_active($post_type)) {
             $meta_query['acfml_lang_active'] = [
                 [
                     'key' => "acfml_lang_active_$language",
@@ -681,6 +681,18 @@ class PostTypesController
         $query->set('meta_query', $meta_query);
         $query->set('orderby', $orderby);
 
+    }
+
+    /**
+     * Should posts of a post type be checked for acfml_lang_active_{lang}?
+     */
+    private function post_type_supports_lang_active(string $post_type): bool
+    {
+        return \apply_filters(
+            'acfml/post_type_supports_lang_active',
+            \post_type_supports($post_type, 'title'),
+            $post_type
+        );
     }
 
     /**
@@ -812,7 +824,6 @@ class PostTypesController
      */
     public function get_post_link(\WP_Post $post, string $language, array $args = []): string
     {
-
         $args = $this->acfml->to_object(\wp_parse_args($args, [
             'check_lang_active' => true,
             'is_sample' => false
@@ -832,6 +843,7 @@ class PostTypesController
         $this->acfml->remove_link_filters();
         // get the unfiltered permalink
         $permalink_native = \get_permalink($post);
+
         // get the permalink for the post, leaving the %postname% tag untouched
         $link_template = \get_permalink($post, true);
         $this->acfml->add_link_filters();
@@ -839,6 +851,11 @@ class PostTypesController
         // return the default permalink if the language is the default one
         if ($this->acfml->is_default_language($language)) {
             return $permalink_native;
+        }
+
+        // return the native permalink, prefixed with the language, if the post type shouldn't be checked
+        if (!$this->post_type_supports_lang_active(\get_post_type($post))) {
+            return $this->acfml->simple_convert_url($permalink_native, $language);
         }
 
         // remove possible parent page uri from attachment urls
@@ -916,12 +933,15 @@ class PostTypesController
         if ($this->acfml->is_default_language($language)) {
             return true;
         }
+
         // get the value from the DB
         $is_active = \get_field("acfml_lang_active_$language", $post->ID);
+
         // return true if unset
         if (\in_array($is_active, [null, ""])) {
             return true;
         }
+
         return \intval($is_active) === 1;
     }
 
