@@ -84,7 +84,7 @@ class PostTypesController
     /**
      * Add a post type for translating the title and slugs
      */
-    public function add_post_type(string $post_type, ?array $args = []): void
+    public function add_post_type(string $post_type, array $args = []): void
     {
         global $wp_post_types;
         // attachments are not supported. They are horrible edge cases :P
@@ -116,7 +116,7 @@ class PostTypesController
     /**
      * Get multilingual post types
      */
-    public function get_multilingual_post_types(?string $format = 'names', $check_supports_title = true): array
+    public function get_multilingual_post_types(string $format = 'names', bool $check_supports_title = true): array
     {
         $post_types = $this->multilingual_post_types;
         if ($check_supports_title) {
@@ -132,7 +132,7 @@ class PostTypesController
     /**
      * Check if a given post type is multilingual
      */
-    public function is_multilingual_post_type(string $post_type, ?bool $check_supports_title = false): bool
+    public function is_multilingual_post_type(string $post_type, bool $check_supports_title = false): bool
     {
         $post_types = $this->get_multilingual_post_types('names', $check_supports_title);
         return \in_array($post_type, $post_types);
@@ -210,7 +210,6 @@ class PostTypesController
      */
     public function setup_acf_fields(): void
     {
-
         $post_types = $this->get_multilingual_post_types();
 
         // bail early if no post types support `multilingual-title`
