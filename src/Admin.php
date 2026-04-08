@@ -2,6 +2,8 @@
 
 namespace Hirasso\ACFML;
 
+use WP_CLI;
+
 if (! \defined('ABSPATH')) {
     exit;
 }
@@ -37,6 +39,23 @@ class Admin
      */
     public function add_notice(string $key, string $message, array $args = []): void
     {
+        $message = \acfml()->prefix_with($message, '[ACFML]');
+
+        if (\acfml()->is_wp_cli()) {
+            switch ($args['type'] ?? null) {
+                case 'warning':
+                    WP_CLI::warning($message);
+                    break;
+                case 'error':
+                    WP_CLI::error($message, false);
+                    break;
+                default:
+                    WP_CLI::success($message);
+                    break;
+            }
+            return;
+        }
+
         // bail early if not in admin or in ajax
         if (!\is_admin() || \wp_doing_ajax()) {
             return;
@@ -44,7 +63,7 @@ class Admin
         // create the $notice object
         $notice = \wp_parse_args($args, [
             'key' => $key,
-            'message' => '[ACFML] ' . $message,
+            'message' => $message,
             'type' => 'warning',
             'is_dismissible' => false,
         ]);

@@ -34,38 +34,38 @@ msgstr ""
 msgid "https://rassohilber.com"
 msgstr ""
 
-#: src/Admin.php:146
+#: src/Admin.php:165
 msgid "Rewrite Rules successfully flushed"
 msgstr ""
 
-#: src/Admin.php:176
+#: src/Admin.php:195
 msgid "Switch your admin language"
 msgstr ""
 
 #. translators: 1: Language Name
-#: src/Admin.php:194
+#: src/Admin.php:213
 #, php-format
 msgid "Switch to %s"
 msgstr ""
 
 #. translators: 1: Link to the Advanced Custom Fields plugin
-#: src/Admin.php:256
+#: src/Admin.php:275
 #, php-format
 msgid "ACF Multilingual requires the plugin %s to be installed and activated."
 msgstr ""
 
 #. translators: 1: Link to the permalink settings
-#: src/Admin.php:275
+#: src/Admin.php:294
 #, php-format
 msgid "Pretty permalinks need to be activated. Please go to your %s and select e.g. 'Post name'."
 msgstr ""
 
-#: src/Admin.php:279
+#: src/Admin.php:298
 msgid "permalink settings"
 msgstr ""
 
 #. translators: 1: Sample Config File Name, 2: Config File Name
-#: src/Admin.php:295
+#: src/Admin.php:314
 #, php-format
 msgid "No config file found. Please copy the file %1$s from the plugin root to your theme root, rename it to %3$s and adjust your settings inside."
 msgstr ""
@@ -103,12 +103,12 @@ msgid "Leave empty to generate the link from title"
 msgstr ""
 
 #. translators: 1: number of posts, 2: post label (singular or plural)
-#: src/PostTypesController.php:1078
+#: src/PostTypesController.php:1077
 #, php-format
 msgid "Successfully processed %1$s %2$s."
 msgstr ""
 
-#: src/PostTypesController.php:1080
+#: src/PostTypesController.php:1079
 msgid "post"
 msgid_plural "posts"
 msgstr[0] ""

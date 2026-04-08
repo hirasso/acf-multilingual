@@ -1275,10 +1275,8 @@ class ACFMultilingual
 
     /**
      * Detect if running WP-CLI
-     *
-     * @return boolean
      */
-    private function is_wp_cli(): bool
+    public function is_wp_cli(): bool
     {
         return \defined('WP_CLI') && WP_CLI;
     }
@@ -1348,6 +1346,16 @@ class ACFMultilingual
         $this->reset_language();
 
         return $value;
+    }
+
+    /**
+     * Add the acfml prefix to a string
+     */
+    public function prefix_with(string $str, string $prefix): string
+    {
+        return !\str_contains($str, $prefix)
+            ? "$prefix $str"
+            : $str;
     }
 
 }

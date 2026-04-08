@@ -1064,7 +1064,6 @@ class PostTypesController
      */
     public function maybe_resave_posts(): void
     {
-
         $resaved_posts_count = $this->resave_all_posts();
         if ($resaved_posts_count === 0) {
             return;
