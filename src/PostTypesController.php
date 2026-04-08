@@ -118,14 +118,11 @@ class PostTypesController
      */
     public function get_multilingual_post_types(string $format = 'names', bool $check_supports_title = true): array
     {
-        $post_types = $this->multilingual_post_types;
-        if ($check_supports_title) {
-            foreach ($post_types as $pt => $value) {
-                if (!\post_type_supports($pt, 'title')) {
-                    unset($post_types[$pt]);
-                }
-            }
-        }
+        $post_types = \array_filter(
+            $this->multilingual_post_types,
+            fn (string $pt) => $check_supports_title ? \post_type_supports($pt, 'title') : true,
+            \ARRAY_FILTER_USE_KEY
+        );
         return $format === 'names' ? \array_keys($post_types) : $post_types;
     }
 
