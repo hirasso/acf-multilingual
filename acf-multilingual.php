@@ -10,6 +10,7 @@
  * Requires PHP: 8.2
  * Domain Path: /lang
  * GitHub Plugin URI: hirasso/acf-multilingual
+ * Primary Branch: main
 **/
 
 if (!\defined('ABSPATH')) {
