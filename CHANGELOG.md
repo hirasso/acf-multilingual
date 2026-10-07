@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.2.5
+
+### Patch Changes
+
+- 82d32fc: Add `Primary Branch: main` header for Git Updater
+
 ## 3.2.4
 
 ### Patch Changes
