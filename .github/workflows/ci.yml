@@ -30,10 +30,11 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
 
-      - name: Setup and Start wp-env
-        uses: godaddy-wordpress/setup-wp-env@v1
-        with:
-          phpVersion: ${{ matrix.php }}
+      # Use the project's pinned wp-env, so that `start` and `run` use the same version
+      - name: Start wp-env
+        run: pnpm run wp-env start
+        env:
+          WP_ENV_PHP_VERSION: ${{ matrix.php }}
 
       - name: Analyse Code
         run: pnpm run analyse
