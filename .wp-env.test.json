@@ -11,6 +11,10 @@
   },
   "phpVersion": "8.2",
   "port": 9784,
+  "config": {
+    "WP_DEBUG": false,
+    "SCRIPT_DEBUG": false
+  },
   "lifecycleScripts": {
     "afterStart": "./tools/wp-env-test-after-start.sh"
   }
