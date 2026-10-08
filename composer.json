@@ -52,14 +52,19 @@
     }
   },
   "extra": {
-    "wordpress-install-dir": "wp",
+    "wordpress-install-dir": "vendor/.wp/core",
     "installer-paths": {
-      "wp/wp-content/plugins/{$name}/": [
+      "vendor/.wp/plugins/{$name}/": [
         "type:wordpress-plugin"
       ],
-      "wp/wp-content/themes/{$name}/": [
+      "vendor/.wp/themes/{$name}/": [
         "type:wordpress-theme"
       ]
     }
+  },
+  "scripts": {
+    "analyse": "phpstan analyse --memory-limit=2G",
+    "format": "pint",
+    "test": "pest --no-coverage"
   }
 }

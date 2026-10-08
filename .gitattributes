@@ -6,7 +6,6 @@ package.json export-ignore
 package-lock.json export-ignore
 pnpm-lock.yaml export-ignore
 jsconfig.json export-ignore
-.nvmrc export-ignore
 /node_modules export-ignore
 
 # php tooling
@@ -15,7 +14,6 @@ composer.json export-ignore
 phpstan.neon export-ignore
 pint.json export-ignore
 /vendor export-ignore
-/wp export-ignore
 
 # tests and CI
 /bin export-ignore

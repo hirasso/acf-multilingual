@@ -4,47 +4,26 @@
   "license": "GPL-2.0-or-later",
   "version": "3.2.5",
   "private": true,
-  "main": "index.js",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "preinstall": "git config core.hooksPath .githooks",
     "make-pot": "tools/make-pot.sh",
-    "format": "pnpm run format:assets && pnpm run format:php",
-    "format:assets": "pnpm exec prettier --write 'resources/*.{js,css}'",
-    "format:php": "./vendor/bin/pint",
-    "analyse": "pnpm run analyse:js && pnpm run analyse:php",
-    "analyse:js": "pnpm exec tsc --noEmit --project ./jsconfig.json",
-    "analyse:php": "vendor/bin/phpstan analyze --memory-limit=2G",
     "version": "pnpm changeset version && bin/cli.js version:patch",
-    "wp-env": "wp-env",
-    "wp-env:cli": "pnpm run wp-env run cli --env-cwd=wp-content/plugins/acf-multilingual",
-    "wp-env:cli:tests": "pnpm run wp-env run tests-cli --env-cwd=wp-content/plugins/acf-multilingual",
-    "wp-env:open": "open http://localhost:9783",
-    "wp-env:open:tests": "open http://localhost:9784",
-    "test": "pnpm test:pest",
-    "test:pest": "pnpm run wp-env:cli:tests vendor/bin/pest --no-coverage",
-    "test:pest:ci": "pnpm run wp-env:cli:tests vendor/bin/pest --coverage-clover coverage.xml"
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-env"
-    ]
-  },
-  "browserslist": [
-    "> 1%",
-    "not dead"
-  ],
-  "postcss": {
-    "plugins": {
-      "autoprefixer": true,
-      "postcss-logical": true,
-      "postcss-dir-pseudo-class": true
-    }
+    "env": "wp-env",
+    "launch": "open $(wp-env status --json | jq -r '.urls.development')",
+    "wp": "wp-env run cli wp",
+    "composer": "wp-env run cli --env-cwd=wp-content/plugins/acf-multilingual composer",
+    "format": "prettier --write 'resources/*.{js,css}' && composer format",
+    "analyse": "tsc --noEmit --project ./jsconfig.json && composer analyse",
+    "test": "wp-env run tests-cli --env-cwd=wp-content/plugins/acf-multilingual composer test"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.7",
     "@types/jquery": "^3.5.33",
-    "@wordpress/env": "^10.34.0",
+    "@wordpress/env": "^11.16.0",
     "fast-glob": "^3.3.3",
     "lint-staged": "^16.2.6",
     "picocolors": "^1.1.1",

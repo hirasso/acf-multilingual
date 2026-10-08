@@ -8,7 +8,6 @@ acfml.config.json
 .phpunit.result.cache
 
 # dependencies
-wp
 vendor
 
 # claude

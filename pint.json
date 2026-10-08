@@ -10,5 +10,5 @@
       "strict": true
     }
   },
-  "exclude": ["wp", "vendor"]
+  "exclude": ["vendor"]
 }
