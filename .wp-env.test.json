@@ -10,11 +10,8 @@
     "wp-content/plugins/acf-multilingual": "."
   },
   "phpVersion": "8.2",
-  "port": 9783,
-  "themes": [
-    "./vendor/.wp/themes/twentytwentyfive"
-  ],
+  "port": 9784,
   "lifecycleScripts": {
-    "afterStart": "./tools/wp-env-after-start.sh"
+    "afterStart": "./tools/wp-env-test-after-start.sh"
   }
 }

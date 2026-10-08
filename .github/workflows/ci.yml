@@ -31,8 +31,8 @@ jobs:
           php-version: ${{ matrix.php }}
 
       # Use the project's pinned wp-env, so that `start` and `run` use the same version
-      - name: Start wp-env
-        run: pnpm run env start
+      - name: Start wp-env (tests)
+        run: pnpm run env:test start
         env:
           WP_ENV_PHP_VERSION: ${{ matrix.php }}
 

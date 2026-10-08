@@ -13,12 +13,13 @@
     "make-pot": "tools/make-pot.sh",
     "version": "pnpm changeset version && bin/cli.js version:patch",
     "env": "wp-env",
+    "env:test": "wp-env --config .wp-env.test.json",
     "launch": "open $(wp-env status --json | jq -r '.urls.development')",
     "wp": "wp-env run cli wp",
     "composer": "wp-env run cli --env-cwd=wp-content/plugins/acf-multilingual composer",
     "format": "prettier --write 'resources/*.{js,css}' && composer format",
     "analyse": "tsc --noEmit --project ./jsconfig.json && composer analyse",
-    "test": "wp-env run tests-cli --env-cwd=wp-content/plugins/acf-multilingual composer test"
+    "test": "wp-env --config .wp-env.test.json run cli --env-cwd=wp-content/plugins/acf-multilingual composer test"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.7",
