@@ -2,11 +2,12 @@
 
 use Hirasso\ACFML\ACFMultilingual;
 use Hirasso\ACFML\Config;
+use Hirasso\ACFML\Tests\TestCase;
 
 /**
  * Tests add_lannguage
  */
-class AddGetLanguagesTest extends WP_UnitTestCase
+class AddGetLanguagesTest extends TestCase
 {
     private Config $config;
 

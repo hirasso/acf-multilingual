@@ -44,5 +44,23 @@ function clear_languages_directory()
     \remove_action('plugins_loaded', 'acfml');
 });
 
+// wp-phpunit defines WP_LANG_DIR via realpath(), which fails if the directory
+// is missing, e.g. after an aborted run that already cleaned it up
+$languagesDir = \getenv('WP_PHPUNIT__DIR') . '/data/languages';
+if (!\is_dir($languagesDir)) {
+    \mkdir($languagesDir);
+}
+
 // Start up the WP testing environment.
 require_once \getenv('WP_PHPUNIT__DIR') . '/includes/bootstrap.php';
+
+/**
+ * wp-phpunit's expectDeprecated() calls PHPUnit\Util\Test::parseTestMethodAnnotations(),
+ * removed in PHPUnit 10+. No @expectedDeprecated annotations are used here.
+ */
+class TestCase extends \WP_UnitTestCase
+{
+    public function expectDeprecated(): void
+    {
+    }
+}
