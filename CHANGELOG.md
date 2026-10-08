@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.2.6
+
+### Patch Changes
+
+- a5b4660: Fix height of the permalink "View" button in the WordPress 7 admin
+
 ## 3.2.5
 
 ### Patch Changes
