@@ -2,8 +2,9 @@
 
 use Hirasso\ACFML\ACFMultilingual;
 use Hirasso\ACFML\Config;
+use Hirasso\ACFML\Tests\TestCase;
 
-class ConvertAndResolveUrlsTest extends WP_UnitTestCase
+class ConvertAndResolveUrlsTest extends TestCase
 {
     /**
     * ACFML instance
