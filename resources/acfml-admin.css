@@ -156,7 +156,7 @@
 /*
 * Slugs
 */
-.acfml-slug .acf-input-append {
+.acf-field.acfml-slug .acf-input-append {
   padding: 0;
   position: relative;
   z-index: 2;
